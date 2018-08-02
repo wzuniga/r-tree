@@ -47,7 +47,8 @@ python manage.py startapp blog
 Here clone the project github and run on terminal
 ```
 python manage.py migrate
-python manage.py runserver
+python manage.py runserverls
+
 ```
 
 Look your site on
