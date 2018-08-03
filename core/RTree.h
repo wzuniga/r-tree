@@ -31,11 +31,21 @@ int RTree<T>::getOrder()
 template <class T>
 void RTree<T>::insertInRTree(T x, T y)
 {
-	LPO<int> lp;
-	this->root = new RNode<T>(order);
-	this->root->listLPO = lp;
-	root->listLPO.insertPolygon(x,y);
-	root->childs = NULL;
+	if(root != NULL)
+	{
+		root->listLPO.insertPolygon(x,y);
+		root->childs = NULL;
+		
+	}
+	else
+	{
+		LPO<int> lp;
+		this->root = new RNode<T>(order);
+		this->root->listLPO = lp;
+		root->listLPO.insertPolygon(x,y);
+		root->childs = NULL;
+	}
+	
 }
 
 template <class T>
