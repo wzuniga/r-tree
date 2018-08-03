@@ -1,3 +1,6 @@
+#include "RNode.h"
+#include "LPO.h"
+
 template <class T>
 class RTree
 {
@@ -6,6 +9,9 @@ class RTree
 		int order;
 	public:
 		RTree(int order);
+		int getOrder();
+		void insertInRTree(T x, T y);
+		void showValues();
 
 };
 
@@ -14,4 +20,26 @@ RTree<T>::RTree(int order)
 {
 	this->root = NULL;
 	this->order = order;
+}
+
+template <class T>
+int RTree<T>::getOrder()
+{
+	return this->order;
+}
+
+template <class T>
+void RTree<T>::insertInRTree(T x, T y)
+{
+	LPO<int> lp;
+	this->root = new RNode<T>(order);
+	this->root->listLPO = lp;
+	root->listLPO.insertPolygon(x,y);
+	root->childs = NULL;
+}
+
+template <class T>
+void RTree<T>::showValues()
+{
+	this->root->listLPO.showPolygons();
 }
