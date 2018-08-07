@@ -1,6 +1,7 @@
 #include <iostream>
-#include "Polygon.h"
 #include "RTree.h"
+#include "Polygon.h"
+#include "LEG.h"
 
 using namespace std;
 
@@ -20,12 +21,25 @@ int main()
 
 	listaPoligonos.showPolygons();*/
 
-	RTree<int> rtree(4);
-	rtree.insertInRTree(1,2);
-	rtree.insertInRTree(4,5);
-	rtree.insertInRTree(6,7);
+
+	
+	RTree<int> rtree(5);
+	//rtree.insertInRTree(1,2);
+	rtree.insertInRTree(3,4);
+	rtree.insertInRTree(5,6);
+	rtree.insertInRTree(7,8);
+	rtree.insertInRTree(9,10);
+	rtree.insertInRTree(11,12);
 	rtree.showValues();
 	cout << "Order" << rtree.getOrder() << endl;
+	cout << rtree.getSizeList() << endl;
+
+	/*LEG<int> lista;
+	lista.insertNodeLEG(34);
+	lista.insertNodeLEG(4);
+	lista.insertNodeLEG(3);
+	lista.showAll();*/
+
 
 
 	return 0;

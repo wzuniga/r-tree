@@ -26,6 +26,7 @@ class Polygon
 
 		void insertPoint(T x, T y);
 		void showPoints();
+		Polygon<T> *getNextPolygon();
 
 		friend class LPO<T>;
 };
@@ -46,6 +47,12 @@ void Polygon<T>::showPoints()
 		cout << "("<<next->coorX << "-" <<next->coorY << ")"<<endl;
 		next = next->nextPoint;
 	}
+}
+
+template <class T>
+Polygon<T> *Polygon<T>::getNextPolygon()
+{
+	return this->nextPolygon;
 }
 
 

@@ -1,3 +1,5 @@
+#include "LPO.h"
+#include "LEG.h"
 
 template <class T>
 class RTree;
@@ -7,7 +9,7 @@ class RNode
 {
 	private:
 		LPO<T> listLPO;
-		LPO<T> *childs;
+		LEG<RNode<T> *> childs;
 		int sizeM;
 		int sizem;
 	public:
