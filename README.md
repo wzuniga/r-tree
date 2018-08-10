@@ -56,3 +56,11 @@ Look your site on
 http://127.0.0.1:8000/
 ```
 
+
+
+RUN C ++ API
+```
+r-tree/API_C++ $ g++ -o apiexample2 apiexample.cc glovehttpserver.cpp glove.cpp glovewebsockets.cpp glovecoding.cpp glovehttpcommon.cpp -lpthread -DENABLE_OPENSSL=0 -DENABLE_COMPRESSION=0 -std=c++11
+
+./apiexample2
+```
