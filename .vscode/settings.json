@@ -1,3 +1,7 @@
 {
-    "python.pythonPath": "${workspaceFolder}/myworkvenv/bin/python"
+    "python.pythonPath": "${workspaceFolder}/myworkvenv/bin/python",
+    "files.associations": {
+        "array": "cpp",
+        "string_view": "cpp"
+    }
 }

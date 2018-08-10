@@ -1,4 +1,6 @@
 from django.shortcuts import render
 
-def post_list(request):
+def getRegionMap(request):
+    print(request.method)
+    #print(request.data)
     return render(request, 'r_tree/post_list.html', {})
