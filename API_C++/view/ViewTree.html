@@ -1,0 +1,50 @@
+<html ng-app="myModule">
+    <head>
+        <title>R-tree online</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    </head>
+    <body ng-controller="ctrlRead">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <canvas id="canvas" width="750" height="600" style="border:5px solid #000000;" ng-click="addOnClick($event)"></canvas>
+                </div>
+                <div class="col-md-4">
+                    <br/>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Insert Mode</div>
+                        <div class="panel-body">
+                            <select class="form-control" ng-model="inputType">
+                                <option value="0">Point</option>
+                                <option value="1">Polygon</option>
+                            </select>
+                            <br/>
+                            <button class="btn btn-info" ng-disabled="actionMode" ng-click="changeState()">Choose</button>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Query Mode</div>
+                        <div class="panel-body">
+                            <select class="form-control">
+                                <option>Range</option>
+                                <option>Nearest</option>
+                            </select>
+                            <br/>
+                            <button class="btn btn-info" ng-disabled="!actionMode" ng-click="changeState()">Choose</button>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Elements</div>
+                        <div class="panel-body">
+                            <select class="form-control" ng-model="selectedRegion" ng-options="item.value for item in items" multiple size="9" ng-change="updateRegion()">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="rtree/js/angular.min.js"></script>
+        <script src="rtree/js/controller.js"></script>
+    </body>
+</html>
