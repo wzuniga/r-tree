@@ -15,23 +15,30 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">Insert Mode</div>
                         <div class="panel-body">
-                            <select class="form-control" ng-model="inputType">
+                            <select class="form-control" ng-model="inputType" ng-disabled="!actionMode">
                                 <option value="0">Point</option>
                                 <option value="1">Polygon</option>
                             </select>
                             <br/>
-                            <button class="btn btn-info" ng-disabled="actionMode" ng-click="changeState()">Choose</button>
+                            <button class="btn btn-info" ng-disabled="actionMode" ng-click="changeState()" ng-class="classInput">{{labelInsert}}</button>
                         </div>
                     </div>
                     <div class="panel panel-default">
                         <div class="panel-heading">Query Mode</div>
                         <div class="panel-body">
-                            <select class="form-control">
-                                <option>Range</option>
-                                <option>Nearest</option>
-                            </select>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <select class="form-control" ng-disabled="actionMode" ng-model="queryModel" ng-change="currentQueryMode()">
+                                        <option value="R">Range</option>
+                                        <option value="N">Nearest</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="number" class="form-control" placeholder="K" ng-disabled="kdisable" ng-model="kvalue"/>
+                                </div>     
+                            </div>
                             <br/>
-                            <button class="btn btn-info" ng-disabled="!actionMode" ng-click="changeState()">Choose</button>
+                            <button class="btn btn-info" ng-disabled="!actionMode" ng-click="changeState()" ng-class="classSearch">{{labelSearch}}</button>
                         </div>
                     </div>
                     <div class="panel panel-default">
