@@ -77,7 +77,7 @@ class Polygon{
     float max_distance_geometric(Point );
 
     std::vector<Point> get_vertices();
-    void set_key(int k){if(this->key==-1)this->key = k;}
+    bool set_key(int );
     int get_key(){return this->key;}
 };
 #endif

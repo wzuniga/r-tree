@@ -84,7 +84,8 @@ RTree_node * RTree::insert_polygon(RTree_node * node, d_leaf data){
     RTree_node * posible_Brother = nullptr;
         //There's space in the leaf?
     if(node->elements < node->M){
-            data.polygon->set_key(this->indx++);
+            if(data.polygon->set_key(this->indx))
+                this->indx++;
             node->data_leafs[node->elements] = data;
             node->elements++;            
     }
@@ -187,7 +188,8 @@ RTree_node *  RTree::cuadratic_split_internal_nodes(RTree_node * node){
 }
 bool RTree::insert_internal_region(RTree_node * node, d_internal_node data ){
     Polygon * reg = new Polygon(data.region->get_Pmin(),data.region->get_Pmax());
-    reg->set_key(this->indx++);
+    if(reg->set_key(this->indx++))
+        this->indx;
     data.region = reg;    
     node->data_internal_node[node->elements] = data;
     node->elements++;
@@ -318,7 +320,6 @@ RTree_node * RTree::select_leaf(RTree_node * node, Polygon * p_region){
 void RTree::range_search_recursive(RTree_node * node, Polygon & query, std::vector<data_query_return> & ans){
     if(node != nullptr){
         if(!node->is_leaf){
-            std::cout<<"****"<<std::endl;
             for(int i = 0; i < node->elements;i++){
                 if(node->data_internal_node[i].region->intersect_with_BB(query) ){
                     //ans.push_back(data_query_return(node->data_internal_node[i].region,node->get_level()));

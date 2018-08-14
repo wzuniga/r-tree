@@ -152,3 +152,11 @@ float Polygon::max_distance_geometric(Point q){
 std::vector<Point> Polygon::get_vertices(){
     return this->vertices;
 }
+
+bool Polygon::set_key(int k){
+    if(this->key==-1){
+        this->key = k;
+        return true;
+    }
+    return false;
+}
