@@ -64,6 +64,7 @@ class Polygon{
     int cost_two_poligons(Polygon & );
     Point get_Pmax(){return Pmax;}
     Point get_Pmin(){return Pmin;}
+    void set_Polygon(Point min, Point max){this->Pmin = min; this->Pmax = max;}
     bool intersect_with_BB(const Polygon &);
     bool is_Within_of(const Polygon &);
     Polygon get_mbb();

@@ -312,7 +312,7 @@ RTree_node * RTree::select_leaf(RTree_node * node, Polygon * p_region){
 void RTree::range_search_recursive(RTree_node * node, Polygon & query, std::vector<data_query_return> & ans){
     if(!node->is_leaf){
         for(int i = 0; i < node->elements;i++){
-            if(query.intersect_with_BB(*node->data_internal_node[i].region)){
+            if(query.intersect_with_BB(*node->data_internal_node[i].region ) || node->data_internal_node[i].region->is_Within_of(query)){
                 ans.push_back(data_query_return(node->data_internal_node[i].region,node->get_level()));
                 range_search_recursive(node->data_internal_node[i].child,query,ans);
             }
@@ -327,7 +327,11 @@ void RTree::range_search_recursive(RTree_node * node, Polygon & query, std::vect
     }
 }
 void RTree::range_search(Polygon query, std::vector<data_query_return> & ans){
-    range_search_recursive(this->root, query, ans);
+    Polygon q = query;
+    if(query.get_Pmax() <= query.get_Pmin()){
+        q.set_Polygon(query.get_Pmax(), query.get_Pmin());
+    }
+    range_search_recursive(this->root, q, ans);
 }
 
 //functions to get the KNN elements.
@@ -450,7 +454,7 @@ void RTree::showAll_values_JSON(RTree_node *node, int level, std::string &json)
         }
     }
 }
-void RTree::get_polygons_JSON(std::vector<d_leaf*> & ans,std::string &json){
+void RTree::get_polygons_JSON(const std::vector<d_leaf*> & ans,std::string &json){
     json += "[";
     for(int i=0; i<ans.size(); i++){
         json +="[";    
@@ -466,6 +470,48 @@ void RTree::get_polygons_JSON(std::vector<d_leaf*> & ans,std::string &json){
         json +="]";
         if((i+1) != ans.size())
             json +=",";
+    }
+    json += "]";
+}
+
+void RTree::get_Range_Search_JSON(const std::vector<data_query_return> & data, std::string &json){
+    json += "[";
+    for(int i=0; i<data.size(); i++){
+        json +="[";
+        json +="{";
+        json +="\"elements\":[";    
+        if(data[i].lvl != 0){
+                json += "[";
+                json += std::to_string(data[i].Pol->get_Pmin().get_X());
+                json += ",";
+                json += std::to_string(data[i].Pol->get_Pmin().get_Y());
+                json += "],[";
+                json += std::to_string(data[i].Pol->get_Pmax().get_X());
+                json += ",";
+                json += std::to_string(data[i].Pol->get_Pmax().get_Y());
+                json += "]";
+        }
+        else{
+            
+            for(int j = 0; j < data[i].Pol->corners; j++){
+                json +="[";  
+                
+                json += std::to_string(data[i].Pol->get_vertices()[j].get_X());
+                json += ",";
+                json += std::to_string(data[i].Pol->get_vertices()[j].get_Y()); 
+            
+                json +="]";
+                if((j+1) != data[i].Pol->corners)
+                        json +=",";
+            }            
+        }
+        json +="],";
+        json+="\"level\":"+std::to_string(data[i].lvl);
+        json += "}";
+
+        json +="]";
+        if((i+1) != data.size())
+            json +=",\n";
     }
     json += "]";
 }
