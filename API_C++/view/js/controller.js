@@ -87,6 +87,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
             if($scope.queryModel == 'R'){
                 if($scope.tempPoint == 0){
                     $scope.tempPoint = {"x":x_c, "y":y_c};
+                    $scope.drawPoint($scope.tempPoint, true, $scope.highlightColor);
                 }else{
                     var temp = Object.assign({}, $scope.tempPoint);
                     $scope.queryRange(temp, {"x":x_c, "y":y_c});
@@ -196,7 +197,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
         }
         $scope.numRegion = 1;
         $scope.regionMemory.forEach( function(object, indice, array) {
-            $scope.drawRectagle(object[0],object[1],object[2]);
+            $scope.drawRectagle(object[0],object[1],object[2],object[3]);
         });
     };
 
@@ -237,7 +238,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
         $scope.ctx.stroke();
     };
 
-    $scope.drawRectagle = function(item1, item2, color){
+    $scope.drawRectagle = function(item1, item2, color, text){
         var x = Math.min(item1.x, item2.x);
         var y = Math.min(item1.y, item2.y);
         $scope.ctx.setLineDash([4, 4]);
@@ -253,7 +254,8 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
         $scope.ctx.moveTo(item2.x, item1.y);
         $scope.ctx.lineTo(item1.x, item1.y);
         $scope.ctx.font = "13px Arial";
-        $scope.ctx.fillText("R"+$scope.numRegion,x+1,y+11);
+        //$scope.ctx.fillText("R"+$scope.numRegion,x+1,y+11);
+        $scope.ctx.fillText("R"+text,x+1,y+11);
         $scope.ctx.stroke();
         $scope.numRegion++;
         //$scope.ctx.strokeRect(cx - 50, cy - 50, 100, 100);
@@ -262,7 +264,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
     $scope.drawRange = function(item1, item2, color){
         var x = Math.min(item1.x, item2.x);
         var y = Math.min(item1.y, item2.y);
-        $scope.ctx.setLineDash([4, 4]);
+        $scope.ctx.setLineDash([15, 10]);
         $scope.ctx.beginPath();
         $scope.ctx.lineWidth = 2;
         $scope.ctx.strokeStyle = color;
@@ -286,12 +288,8 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
         $scope.ctx.lineWidth = 2;
         $scope.ctx.strokeStyle = color;
         $scope.ctx.moveTo(item1.x, item1.y);
-        $scope.ctx.lineTo(item1.x, item2.y);
-        $scope.ctx.moveTo(item2.x, item2.y);
         $scope.ctx.lineTo(item2.x, item2.y);
         $scope.ctx.stroke();
-        $scope.numRegion++;
-        //$scope.ctx.strokeRect(cx - 50, cy - 50, 100, 100);
     }
 
     $scope.drawGrid = function(){
@@ -329,8 +327,8 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
                     if(object.is_leaf == "0"){
                         var c_1 = object.elements[0];
                         var c_2 = object.elements[1];
-                        $scope.drawRectagle({"x":c_1[0],"y":c_1[1]},{"x":c_2[0],"y":c_2[1]}, $scope.colorVector[object.level]);
-                        $scope.regionMemory.push([{"x":c_1[0],"y":c_1[1]},{"x":c_2[0],"y":c_2[1]}, $scope.colorVector[object.level]]);
+                        $scope.drawRectagle({"x":c_1[0],"y":c_1[1]},{"x":c_2[0],"y":c_2[1]}, $scope.colorVector[object.level], object.key);
+                        $scope.regionMemory.push([{"x":c_1[0],"y":c_1[1]},{"x":c_2[0],"y":c_2[1]}, $scope.colorVector[object.level], object.key]);
                     }else{
                         object.elements.forEach( function(polygon) {
                             //console.log("##");
@@ -378,9 +376,9 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
                     }else{
                         var c_1 = polygon[0];
                         $scope.drawPoint({"x":c_1[0],"y":c_1[1]}, true, $scope.highlightColor);
+                        $scope.drawLine({"x":x_v, "y":y_v}, {"x":c_1[0],"y":c_1[1]}, $scope.highlightColor);
                     }
                 });
-                //$scope.drawLine();
             })
             .error(function (data) {
                 alert("Error " + data);
