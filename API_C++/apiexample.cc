@@ -29,7 +29,7 @@ public:
             std::cout <<R_1[i].get_X()<<" " <<R_1[i].get_Y()<<std::endl;
             //std::cout <<data[i]["y"] <<std::endl;
         }
-        Polygon * p = new Polygon(R_1,1);
+        Polygon * p = new Polygon(R_1);
         Polygon * r = new Polygon(p->get_Pmin(),p->get_Pmax());
         MyR_tree.insert_polygon(p,r);
         auto res =  MyR_tree.show_values_JSON();
@@ -75,6 +75,7 @@ public:
         MyR_tree.get_Range_Search_JSON(answ, res);
         response << res;
         std::cout << "POST Range API"<<std::endl;
+        std::cout <<res<<std::endl;
     }
 
 };

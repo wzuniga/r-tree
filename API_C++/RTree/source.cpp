@@ -184,10 +184,10 @@ MyR_tree.insert_polygon(&myReal_R_21,&reg_real_R_21);*/
     std::vector<Point> R_3{Point(613,337),Point(630,357),Point(668,347),Point(662,364)};
     std::vector<Point> R_5{Point(320,174),Point(319,137),Point(374,135),Point(376,175)};
     std::vector<Point> R_11{Point(661,184),Point(653,184),Point(654,236),Point(662,236)};
-    Polygon myReal_R_1(R_1,1);
-    Polygon myReal_R_3(R_3,3);
-    Polygon myReal_R_5(R_5,5);
-    Polygon myReal_R_11(R_11,11);
+    Polygon myReal_R_1(R_1);
+    Polygon myReal_R_3(R_3);
+    Polygon myReal_R_5(R_5);
+    Polygon myReal_R_11(R_11);
     Polygon reg_real_R_1=Polygon(myReal_R_1.get_Pmin(),myReal_R_1.get_Pmax());
     Polygon reg_real_R_3=Polygon(myReal_R_3.get_Pmin(),myReal_R_3.get_Pmax());
     Polygon reg_real_R_5=Polygon(myReal_R_5.get_Pmin(),myReal_R_5.get_Pmax());

@@ -50,6 +50,7 @@ class RTree{
     int M;
     int m;
     int H; //Height of tree
+    int indx;
     //Insert Polygon internaly
     RTree_node * insert_polygon(RTree_node *, d_leaf);
     //general function to insert
@@ -79,7 +80,7 @@ class RTree{
     template <class T>
     void insert_sort(std::vector<float> & , std::vector<T*> & );
     public:
-    RTree(int _M): M(_M), m((_M+1)/2),root(nullptr), H(0){};
+    RTree(int _M): M(_M), m((_M+1)/2),root(nullptr), H(0), indx(0){};
     
     //Insert Polygon in Front-end
     bool insert_polygon(Polygon * , Polygon *);

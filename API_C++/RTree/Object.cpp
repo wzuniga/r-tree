@@ -1,12 +1,12 @@
 #include "Objects.hpp"
 #include <math.h>
 
-Polygon::Polygon(std::vector<Point> p, int k = 0):vertices(p), key(k),corners(p.size()){
+Polygon::Polygon(std::vector<Point> p):vertices(p), key(-1),corners(p.size()){
     Polygon mbb = this->get_mbb();
     this->Pmin = mbb.Pmin;
     this->Pmax = mbb.Pmax;   
 }
-Polygon::Polygon(Point P, int k = 0):corners(1), key(k) {
+Polygon::Polygon(Point P):corners(1), key(-1) {
     this->Pmin = P;
     this->Pmax = P;
     this->vertices.push_back(P);

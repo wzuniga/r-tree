@@ -84,9 +84,9 @@ RTree_node * RTree::insert_polygon(RTree_node * node, d_leaf data){
     RTree_node * posible_Brother = nullptr;
         //There's space in the leaf?
     if(node->elements < node->M){
+            data.polygon->set_key(this->indx++);
             node->data_leafs[node->elements] = data;
-            node->elements++;
-            
+            node->elements++;            
     }
     else{
         node->data_leafs[node->elements] = data;
@@ -186,7 +186,9 @@ RTree_node *  RTree::cuadratic_split_internal_nodes(RTree_node * node){
     return brother;
 }
 bool RTree::insert_internal_region(RTree_node * node, d_internal_node data ){
-    data.region = new Polygon(data.region->get_Pmin(),data.region->get_Pmax());    
+    Polygon * reg = new Polygon(data.region->get_Pmin(),data.region->get_Pmax());
+    reg->set_key(this->indx++);
+    data.region = reg;    
     node->data_internal_node[node->elements] = data;
     node->elements++;
 }
@@ -261,10 +263,14 @@ void RTree::adjust_tree(RTree_node * node, RTree_node *brother){
     if(node->father != nullptr){
         for(int m = 0; m < node->father->elements; m++){
             if(node->father->data_internal_node[m].child == node){
+                int key = node->father->data_internal_node[m].region->get_key();
                 *node->father->data_internal_node[m].region = node->mbb_node();
+                node->father->data_internal_node[m].region->set_key(key);
             }
             else if(node->father->data_internal_node[m].child == brother){
+                int key = brother->father->data_internal_node[m].region->get_key();
                 *brother->father->data_internal_node[m].region = brother->mbb_node();
+                brother->father->data_internal_node[m].region->set_key(key);
             }
         }
         if(node->elements > this->M && !node->is_leaf){

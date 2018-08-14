@@ -55,11 +55,11 @@ class Polygon{
     public:
     int corners;
     //Initialize the Vertices of Polygon
-    Polygon(std::vector<Point> , int) ;
+    Polygon(std::vector<Point> ) ;
     //It represent a rectangle region.
-    Polygon(Point pmin, Point pmax):Pmin(pmin),Pmax(pmax), corners(4){};
+    Polygon(Point pmin, Point pmax):Pmin(pmin),Pmax(pmax), corners(4), key(-1){};
     //Generic Polygon, a point is Polygon
-    Polygon(Point , int);
+    Polygon(Point);
     //Cost of add a polygon.
     int cost_two_poligons(Polygon & );
     Point get_Pmax(){return Pmax;}
@@ -77,6 +77,7 @@ class Polygon{
     float max_distance_geometric(Point );
 
     std::vector<Point> get_vertices();
-    
+    void set_key(int k){if(this->key==-1)this->key = k;}
+    int get_key(){return this->key;}
 };
 #endif
