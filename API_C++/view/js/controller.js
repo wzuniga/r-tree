@@ -259,6 +259,41 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
         //$scope.ctx.strokeRect(cx - 50, cy - 50, 100, 100);
     }
 
+    $scope.drawRange = function(item1, item2, color){
+        var x = Math.min(item1.x, item2.x);
+        var y = Math.min(item1.y, item2.y);
+        $scope.ctx.setLineDash([4, 4]);
+        $scope.ctx.beginPath();
+        $scope.ctx.lineWidth = 2;
+        $scope.ctx.strokeStyle = color;
+        $scope.ctx.moveTo(item1.x, item1.y);
+        $scope.ctx.lineTo(item1.x, item2.y);
+        $scope.ctx.moveTo(item1.x, item2.y);
+        $scope.ctx.lineTo(item2.x, item2.y);
+        $scope.ctx.moveTo(item2.x, item2.y);
+        $scope.ctx.lineTo(item2.x, item1.y);
+        $scope.ctx.moveTo(item2.x, item1.y);
+        $scope.ctx.lineTo(item1.x, item1.y);
+        $scope.ctx.font = "13px Arial";
+        $scope.ctx.fillText("Range",x+1,y+11);
+        $scope.ctx.stroke();
+        $scope.numRegion++;
+        //$scope.ctx.strokeRect(cx - 50, cy - 50, 100, 100);
+    }
+
+    $scope.drawLine = function(item1, item2, color){
+        $scope.ctx.beginPath();
+        $scope.ctx.lineWidth = 2;
+        $scope.ctx.strokeStyle = color;
+        $scope.ctx.moveTo(item1.x, item1.y);
+        $scope.ctx.lineTo(item1.x, item2.y);
+        $scope.ctx.moveTo(item2.x, item2.y);
+        $scope.ctx.lineTo(item2.x, item2.y);
+        $scope.ctx.stroke();
+        $scope.numRegion++;
+        //$scope.ctx.strokeRect(cx - 50, cy - 50, 100, 100);
+    }
+
     $scope.drawGrid = function(){
         for (var i = 0; i < (750); i += 20) {
             $scope.ctx.beginPath();
@@ -345,7 +380,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
                         $scope.drawPoint({"x":c_1[0],"y":c_1[1]}, true, $scope.highlightColor);
                     }
                 });
-                
+                //$scope.drawLine();
             })
             .error(function (data) {
                 alert("Error " + data);
@@ -354,7 +389,6 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
     };
 
     $scope.queryRange = function(point_1, point_2){
-        
         $http.post("/rtree/range",{"point1":point_1, "point2":point_2})
             .success(function (data) {
                 console.log(data);
@@ -362,18 +396,19 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
                 $scope.reDrawCanvas();
                 $scope.numRegion = 1;
                 data.forEach( function(polygon) {
-                    if(polygon.length >1){
+                    var points = polygon[0].elements;
+                    if(points.length >1){
                         var temp = [];
-                        for(var i=0; i<polygon.length; i++)
-                            temp.push({"x":polygon[i][0],"y":polygon[i][1]});
+                        for(var i=0; i<points.length; i++)
+                            temp.push({"x":points[i][0],"y":points[i][1]});
                         $scope.drawRegion(temp, true, $scope.highlightColor);
                     }else{
-                        var c_1 = polygon[0];
+                        var c_1 = points[0];
                         console.log(c_1);
                         $scope.drawPoint({"x":c_1[0],"y":c_1[1]}, true, $scope.highlightColor);
                     }
                 });
-                
+                $scope.drawRange(point_1, point_2, $scope.highlightColor);
             })
             .error(function (data) {
                 alert("Error " + data);
