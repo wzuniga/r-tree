@@ -39,6 +39,10 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
     $scope.highlightColor = "#ff0000";
     $scope.blackColor = "#000000";
 
+    //range
+    $scope.tempPoint = 0;
+    //$scope.
+
     $scope.changeState = function(){
         $scope.actionMode = !$scope.actionMode;
         var tempClass = $scope.classInput;
@@ -81,7 +85,13 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
             $scope.ctx.stroke();
         }else{
             if($scope.queryModel == 'R'){
-
+                if($scope.tempPoint == 0){
+                    $scope.tempPoint = {"x":x_c, "y":y_c};
+                }else{
+                    var temp = Object.assign({}, $scope.tempPoint);
+                    $scope.queryRange(temp, {"x":x_c, "y":y_c});
+                    $scope.tempPoint = 0;
+                }
             }else{
                 $scope.queryKnearest(x_c, y_c, $scope.kvalue);
             }
@@ -323,6 +333,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
                 //console.log(data);
                 $scope.clearCanvas();
                 $scope.reDrawCanvas();
+                $scope.numRegion = 1;
                 data.forEach( function(polygon) {
                     if(polygon.length >1){
                         var temp = [];
@@ -342,6 +353,33 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
         );
     };
 
-    $scope.drawGrid();
+    $scope.queryRange = function(point_1, point_2){
+        
+        $http.post("/rtree/range",{"point1":point_1, "point2":point_2})
+            .success(function (data) {
+                console.log(data);
+                $scope.clearCanvas();
+                $scope.reDrawCanvas();
+                $scope.numRegion = 1;
+                data.forEach( function(polygon) {
+                    if(polygon.length >1){
+                        var temp = [];
+                        for(var i=0; i<polygon.length; i++)
+                            temp.push({"x":polygon[i][0],"y":polygon[i][1]});
+                        $scope.drawRegion(temp, true, $scope.highlightColor);
+                    }else{
+                        var c_1 = polygon[0];
+                        console.log(c_1);
+                        $scope.drawPoint({"x":c_1[0],"y":c_1[1]}, true, $scope.highlightColor);
+                    }
+                });
+                
+            })
+            .error(function (data) {
+                alert("Error " + data);
+            }
+        );
+    };
+    //$scope.drawGrid();
 
 });
