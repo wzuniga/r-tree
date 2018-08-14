@@ -327,7 +327,11 @@ void RTree::range_search_recursive(RTree_node * node, Polygon & query, std::vect
     }
 }
 void RTree::range_search(Polygon query, std::vector<data_query_return> & ans){
-    range_search_recursive(this->root, query, ans);
+    Polygon q = query;
+    if(query.get_Pmax() <= query.get_Pmin()){
+        q.set_Polygon(query.get_Pmax(), query.get_Pmin());
+    }
+    range_search_recursive(this->root, q, ans);
 }
 
 //functions to get the KNN elements.
