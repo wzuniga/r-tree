@@ -19,6 +19,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
 
     $scope.memory = [];
     $scope.indexItems = 1;
+    $scope.numRegion = 1;
     
     // mode
     $scope.actionMode = true;
@@ -37,6 +38,10 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
     $scope.colorVector = ['#5f5dbb', '#7495bb', '#74c0bb', '#f18539', '#f1c500', '#81c200', '#83b786'];
     $scope.highlightColor = "#ff0000";
     $scope.blackColor = "#000000";
+
+    //range
+    $scope.tempPoint = 0;
+    //$scope.
 
     $scope.changeState = function(){
         $scope.actionMode = !$scope.actionMode;
@@ -61,7 +66,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
                     "y": y_c,
                 };
                 $scope.putOnMemory(point, "P");
-                $scope.drawPoint(point, false);
+                $scope.drawPoint(point, false, "");
                 $scope.insertToTree([point]);
             }else if($scope.inputType == "1"){
                 if($scope.findOnItems($scope.polgItems, x_c, y_c)){
@@ -74,13 +79,19 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
                         "x": x_c,
                         "y": y_c,
                     });
-                    $scope.drawPoint($scope.polgItems[$scope.polgItems.length-1], false);
+                    $scope.drawPoint($scope.polgItems[$scope.polgItems.length-1], false, "");
                 }
             }
             $scope.ctx.stroke();
         }else{
             if($scope.queryModel == 'R'){
-
+                if($scope.tempPoint == 0){
+                    $scope.tempPoint = {"x":x_c, "y":y_c};
+                }else{
+                    var temp = Object.assign({}, $scope.tempPoint);
+                    $scope.queryRange(temp, {"x":x_c, "y":y_c});
+                    $scope.tempPoint = 0;
+                }
             }else{
                 $scope.queryKnearest(x_c, y_c, $scope.kvalue);
             }
@@ -144,7 +155,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
             $scope.memory.push( {
                 "type": "R",
                 "index": num,
-                "value": "R-"+num+" "+vals,
+                "value": "P-"+num+" "+vals,
                 "point": item,
                 "highlight": false,
             });
@@ -155,9 +166,13 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
 
     //delete an item from memory
     $scope.deleteOnMemory = function(index){
-        $scope.clearCanvas();
-        $scope.memory.splice(index, 1);
-        $scope.reDrawCanvas();    
+        $scope.memory = [];
+        $scope.items = [];
+        $scope.indexItems = 1;
+        $scope.numRegion = 1;
+        //$scope.clearCanvas();
+        //$scope.memory.splice(index, 1);
+        //$scope.reDrawCanvas();    
     };
 
 
@@ -171,13 +186,15 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
     };
     $scope.reDrawCanvas = function(){
         var len = $scope.memory.length;
+        $scope.drawGrid();
         for(var i = 0; i < len; i++){
             if($scope.memory[i].type == "P")
-                $scope.drawPoint($scope.memory[i].point, $scope.memory[i].highlight);
+                $scope.drawPoint($scope.memory[i].point, $scope.memory[i].highlight, $scope.highlightColor);
             else
-                $scope.drawRegion($scope.memory[i].point, $scope.memory[i].highlight, $scope.blackColor);
+                $scope.drawRegion($scope.memory[i].point, $scope.memory[i].highlight, $scope.highlightColor);
             //$scope.ctx.stroke();
         }
+        $scope.numRegion = 1;
         $scope.regionMemory.forEach( function(object, indice, array) {
             $scope.drawRectagle(object[0],object[1],object[2]);
         });
@@ -187,14 +204,14 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
     /**
      * draw functions
     **/
-    $scope.drawPoint = function(point, hl){
+    $scope.drawPoint = function(point, hl, color){
         //console.log($scope.ctx);
         $scope.ctx.beginPath();
         $scope.ctx.setLineDash([]);
         $scope.ctx.arc(point.x, point.y, 3, 0, 2 * Math.PI);
         if(hl){
-            $scope.ctx.lineWidth = 2;
-            $scope.ctx.strokeStyle = $scope.highlightColor;
+            $scope.ctx.lineWidth = 4;
+            $scope.ctx.strokeStyle = color;
         }else{
             $scope.ctx.lineWidth = 1;
             $scope.ctx.strokeStyle = '#000000';
@@ -207,11 +224,11 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
         $scope.ctx.beginPath();
         $scope.ctx.setLineDash([]);
         if(hl){
-            $scope.ctx.lineWidth = 2;
-            $scope.ctx.strokeStyle = $scope.highlightColor;
+            $scope.ctx.lineWidth = 4;
+            $scope.ctx.strokeStyle = color;
         }else{
             $scope.ctx.lineWidth = 1;
-            $scope.ctx.strokeStyle = color;
+            $scope.ctx.strokeStyle = $scope.blackColor;
         }
         for(var i = 0; i < len; i++){
             $scope.ctx.moveTo(arr[i%len].x, arr[i%len].y);
@@ -225,6 +242,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
         var y = Math.min(item1.y, item2.y);
         $scope.ctx.setLineDash([4, 4]);
         $scope.ctx.beginPath();
+        $scope.ctx.lineWidth = 1;
         $scope.ctx.strokeStyle = color;
         $scope.ctx.moveTo(item1.x, item1.y);
         $scope.ctx.lineTo(item1.x, item2.y);
@@ -235,12 +253,32 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
         $scope.ctx.moveTo(item2.x, item1.y);
         $scope.ctx.lineTo(item1.x, item1.y);
         $scope.ctx.font = "13px Arial";
-        $scope.ctx.fillText("R1",x+1,y+11);
+        $scope.ctx.fillText("R"+$scope.numRegion,x+1,y+11);
         $scope.ctx.stroke();
+        $scope.numRegion++;
         //$scope.ctx.strokeRect(cx - 50, cy - 50, 100, 100);
     }
 
-
+    $scope.drawGrid = function(){
+        for (var i = 0; i < (750); i += 20) {
+            $scope.ctx.beginPath();
+            $scope.ctx.lineWidth = 1;
+            $scope.ctx.strokeStyle = '#ccc';
+            $scope.ctx.moveTo(i,0);
+            $scope.ctx.lineTo(i, 600);
+            $scope.ctx.closePath();
+            //$scope.ctx.stroke();
+        }
+        for (var i = 0; i < (600); i += 20) {
+            $scope.ctx.beginPath();
+            $scope.ctx.lineWidth = 1;
+            $scope.ctx.strokeStyle = '#ccc';
+            $scope.ctx.moveTo(0, i);
+            $scope.ctx.lineTo(750, i);
+            $scope.ctx.closePath();
+            //$scope.ctx.stroke();
+        }
+    };
     /*
     *   Server Manage
     */
@@ -248,6 +286,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
         $http.post("/rtree/insert",{"data":pointArr})
             .success(function (data) {
                 console.log(data);
+                $scope.deleteOnMemory();
                 $scope.clearCanvas();
                 //$scope.reDrawCanvas();
                 data.forEach( function(object, indice, array) {
@@ -265,11 +304,12 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
                                 var temp = [];
                                 for(var i=0; i<polygon.length; i++)
                                     temp.push({"x":polygon[i][0],"y":polygon[i][1]});
+                                $scope.putOnMemory(temp, "R");
                                 $scope.drawRegion(temp, false, $scope.blackColor);
                             }else{
                                 var c_1 = polygon[0];
-                                //console.log(c_1[0]);
-                                $scope.drawPoint({"x":c_1[0],"y":c_1[1]}, false);
+                                $scope.putOnMemory({"x":c_1[0],"y":c_1[1]}, "P");
+                                $scope.drawPoint({"x":c_1[0],"y":c_1[1]}, false, "");
                             }
                         });
                     }
@@ -286,9 +326,25 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
             $scope.kvalue = 1;
             k = 1;
         }
+        for(var i=0; i<$scope.selectedRegion.length; i++)
+            $scope.selectedRegion[i].highlight = false;
         $http.post("/rtree/nearest",{"x":x_v, "y":y_v, "k":k})
             .success(function (data) {
-                console.log(data);
+                //console.log(data);
+                $scope.clearCanvas();
+                $scope.reDrawCanvas();
+                $scope.numRegion = 1;
+                data.forEach( function(polygon) {
+                    if(polygon.length >1){
+                        var temp = [];
+                        for(var i=0; i<polygon.length; i++)
+                            temp.push({"x":polygon[i][0],"y":polygon[i][1]});
+                        $scope.drawRegion(temp, true, $scope.highlightColor);
+                    }else{
+                        var c_1 = polygon[0];
+                        $scope.drawPoint({"x":c_1[0],"y":c_1[1]}, true, $scope.highlightColor);
+                    }
+                });
                 
             })
             .error(function (data) {
@@ -297,6 +353,33 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
         );
     };
 
-    
+    $scope.queryRange = function(point_1, point_2){
+        
+        $http.post("/rtree/range",{"point1":point_1, "point2":point_2})
+            .success(function (data) {
+                console.log(data);
+                $scope.clearCanvas();
+                $scope.reDrawCanvas();
+                $scope.numRegion = 1;
+                data.forEach( function(polygon) {
+                    if(polygon.length >1){
+                        var temp = [];
+                        for(var i=0; i<polygon.length; i++)
+                            temp.push({"x":polygon[i][0],"y":polygon[i][1]});
+                        $scope.drawRegion(temp, true, $scope.highlightColor);
+                    }else{
+                        var c_1 = polygon[0];
+                        console.log(c_1);
+                        $scope.drawPoint({"x":c_1[0],"y":c_1[1]}, true, $scope.highlightColor);
+                    }
+                });
+                
+            })
+            .error(function (data) {
+                alert("Error " + data);
+            }
+        );
+    };
+    //$scope.drawGrid();
 
 });

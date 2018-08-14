@@ -56,12 +56,25 @@ public:
     void postRange(GloveHttpRequest& request, GloveHttpResponse& response)
     {
         response.contentType("text/json");
-        //auto res = "{'1':[[[1,2],[1,2]]]}";
+
         auto jsonInput = nlohmann::json::parse(request.getData());
-        auto x = jsonInput["data"];
-        auto res = "[{\"level\":0,\"is_leaf\":0,\"elements\":[[100,200],[300,400]]},{\"level\":1,\"is_leaf\":0,\"elements\":[[10,20],[30,40]]},{\"level\":2,\"is_leaf\":1,\"elements\":[[100,200],[100,200],[6,7]]},{\"level\":1,\"is_leaf\":0,\"elements\":[[50,80],[90,150]]},{\"level\":0,\"is_leaf\":0,\"elements\":[[15,25],[35,45]]},{\"level\":2,\"is_leaf\":1,\"elements\":[[524,345],[413,389],[469,492],[561,477],[585,411]]}]";
+        auto p1 = jsonInput["point1"];
+        auto p2 = jsonInput["point2"];
+
+        std::vector<data_query_return > answ;
+        Polygon query(Point(p1["x"],p1["y"]),Point(p2["x"],p2["y"]));
+        std::cout<<query.get_Pmin().get_X()<<"," <<query.get_Pmin().get_Y()<<std::endl;
+        std::cout<<query.get_Pmax().get_X()<<"," <<query.get_Pmax().get_Y()<<std::endl;
+        MyR_tree.range_search(query,answ);
+        std::cout<<"....."<<std::endl;
+        std::cout<<answ.size();
+        for(int i = 0; i < answ.size(); i++){
+            std::cout<<answ[i].Pol->corners<<" ";
+        }
+        std::string res = "";
+        MyR_tree.get_Range_Search_JSON(answ, res);
         response << res;
-        std::cout << "POST INSERT API x="<<x<<std::endl;
+        std::cout << "POST Range API"<<std::endl;
     }
 
 };
