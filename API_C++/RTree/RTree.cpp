@@ -313,7 +313,7 @@ void RTree::range_search_recursive(RTree_node * node, Polygon & query, std::vect
     if(!node->is_leaf){
         for(int i = 0; i < node->elements;i++){
             if(query.intersect_with_BB(*node->data_internal_node[i].region ) || node->data_internal_node[i].region->is_Within_of(query)){
-                ans.push_back(data_query_return(node->data_internal_node[i].region,node->get_level()));
+                //ans.push_back(data_query_return(node->data_internal_node[i].region,node->get_level()));
                 range_search_recursive(node->data_internal_node[i].child,query,ans);
             }
         }
