@@ -19,7 +19,6 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
 
     $scope.memory = [];
     $scope.indexItems = 1;
-    $scope.numRegion = 1;
     
     // mode
     $scope.actionMode = true;
@@ -35,9 +34,11 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
 
     //general memory
     $scope.regionMemory = [];
-    $scope.colorVector = ['#5f5dbb', '#7495bb', '#74c0bb', '#f18539', '#f1c500', '#81c200', '#83b786'];
+    //$scope.colorVector = ['#5f5dbb', '#7495bb', '#74c0bb', '#f18539', '#f1c500', '#81c200', '#83b786'];
+    $scope.colorVector = ['#9900ff', '#0099ff', '#00ff33', "#ffff00"];
     $scope.highlightColor = "#ff0000";
     $scope.blackColor = "#000000";
+    $scope.highlightNearestColor = "#00FF00";
 
     //range
     $scope.tempPoint = 0;
@@ -170,7 +171,6 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
         $scope.memory = [];
         $scope.items = [];
         $scope.indexItems = 1;
-        $scope.numRegion = 1;
         //$scope.clearCanvas();
         //$scope.memory.splice(index, 1);
         //$scope.reDrawCanvas();    
@@ -195,7 +195,6 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
                 $scope.drawRegion($scope.memory[i].point, $scope.memory[i].highlight, $scope.highlightColor);
             //$scope.ctx.stroke();
         }
-        $scope.numRegion = 1;
         $scope.regionMemory.forEach( function(object, indice, array) {
             $scope.drawRectagle(object[0],object[1],object[2],object[3]);
         });
@@ -241,7 +240,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
     $scope.drawRectagle = function(item1, item2, color, text){
         var x = Math.min(item1.x, item2.x);
         var y = Math.min(item1.y, item2.y);
-        $scope.ctx.setLineDash([4, 4]);
+        //$scope.ctx.setLineDash([4, 4]);
         $scope.ctx.beginPath();
         $scope.ctx.lineWidth = 1;
         $scope.ctx.strokeStyle = color;
@@ -257,7 +256,6 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
         //$scope.ctx.fillText("R"+$scope.numRegion,x+1,y+11);
         $scope.ctx.fillText("R"+text,x+1,y+11);
         $scope.ctx.stroke();
-        $scope.numRegion++;
         //$scope.ctx.strokeRect(cx - 50, cy - 50, 100, 100);
     }
 
@@ -279,7 +277,6 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
         $scope.ctx.font = "13px Arial";
         $scope.ctx.fillText("Range",x+1,y+11);
         $scope.ctx.stroke();
-        $scope.numRegion++;
         //$scope.ctx.strokeRect(cx - 50, cy - 50, 100, 100);
     }
 
@@ -366,17 +363,25 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
                 //console.log(data);
                 $scope.clearCanvas();
                 $scope.reDrawCanvas();
-                $scope.numRegion = 1;
                 data.forEach( function(polygon) {
                     if(polygon.length >1){
                         var temp = [];
-                        for(var i=0; i<polygon.length; i++)
+                        var min = {"x":polygon[0][0],"y":polygon[0][1]};
+                        var minDist = $scope.euclidean({"x":polygon[0][0],"y":polygon[0][1]},{"x":x_v, "y":y_v, "k":k});
+                        for(var i=0; i<polygon.length; i++){
                             temp.push({"x":polygon[i][0],"y":polygon[i][1]});
+                            var dist = $scope.euclidean({"x":polygon[i][0],"y":polygon[i][1]},{"x":x_v, "y":y_v, "k":k});
+                            if(dist < minDist){
+                                minDist = dist;
+                                min = {"x":polygon[i][0],"y":polygon[i][1]};
+                            }
+                        }
                         $scope.drawRegion(temp, true, $scope.highlightColor);
+                        $scope.drawLine({"x":x_v, "y":y_v}, min, $scope.highlightNearestColor);
                     }else{
                         var c_1 = polygon[0];
                         $scope.drawPoint({"x":c_1[0],"y":c_1[1]}, true, $scope.highlightColor);
-                        $scope.drawLine({"x":x_v, "y":y_v}, {"x":c_1[0],"y":c_1[1]}, $scope.highlightColor);
+                        $scope.drawLine({"x":x_v, "y":y_v}, {"x":c_1[0],"y":c_1[1]}, $scope.highlightNearestColor);
                     }
                 });
             })
@@ -392,7 +397,6 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
                 console.log(data);
                 $scope.clearCanvas();
                 $scope.reDrawCanvas();
-                $scope.numRegion = 1;
                 data.forEach( function(polygon) {
                     var points = polygon[0].elements;
                     if(points.length >1){
@@ -415,4 +419,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
     };
     //$scope.drawGrid();
 
+    $scope.euclidean = function(point1, point2){
+        return Math.sqrt(Math.pow(point2.x-point1.x,2)+Math.pow(point2.y-point1.y,2));
+    };
 });
