@@ -437,6 +437,7 @@ void RTree::showAll_values_JSON(RTree_node *node, int level, std::string &json)
             json +="{";
             json += "\"level\":"+std::to_string(node->at_level)+",\n";
             json += "\"is_leaf\":"+std::to_string(0)+",\n";
+            json += "\"key\":"+std::to_string(node->data_internal_node[i].region->get_key())+",\n";
             json += "\"elements\":[";
             json +="["+std::to_string(node->data_internal_node[i].region->get_Pmin().get_X())+","+std::to_string(node->data_internal_node[i].region->get_Pmin().get_Y())+"],\n";
             json +="["+std::to_string(node->data_internal_node[i].region->get_Pmax().get_X())+","+std::to_string(node->data_internal_node[i].region->get_Pmax().get_Y())+"]\n";

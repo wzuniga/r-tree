@@ -197,6 +197,9 @@ MyR_tree.insert_polygon(&myReal_R_21,&reg_real_R_21);*/
     MyR_tree.insert_polygon(&myReal_R_3,&reg_real_R_3);
     MyR_tree.insert_polygon(&myReal_R_5,&reg_real_R_5);
     MyR_tree.insert_polygon(&myReal_R_11,&reg_real_R_11);
+
+    MyR_tree.show_values_JSON();
+
     std::vector<data_query_return > answ;
     MyR_tree.range_search(Polygon(Point(476, 408),Point(691, 322)),answ);
 
