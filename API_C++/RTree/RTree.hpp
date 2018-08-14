@@ -94,7 +94,9 @@ class RTree{
 
     void showAll_values_JSON(RTree_node *father, int level, std::string &);
 
-    void get_polygons_JSON(std::vector<d_leaf*> &, std::string &);
+    void get_polygons_JSON(const std::vector<d_leaf*> &, std::string &);
+
+    void get_Range_Search_JSON(const std::vector<data_query_return> &, std::string &);
 };
 
 #endif
