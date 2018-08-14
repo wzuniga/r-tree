@@ -65,7 +65,8 @@ class Polygon{
     Point get_Pmax(){return Pmax;}
     Point get_Pmin(){return Pmin;}
     void set_Polygon(Point min, Point max){this->Pmin = min; this->Pmax = max;}
-    bool intersect_with_BB(const Polygon &);
+    bool intersect_with_BB(Polygon &);
+    bool traberse_with(Polygon &);
     bool is_Within_of(const Polygon &);
     Polygon get_mbb();
     //To get KNN query- Geometric distance.
@@ -76,5 +77,6 @@ class Polygon{
     float max_distance_geometric(Point );
 
     std::vector<Point> get_vertices();
+    
 };
 #endif

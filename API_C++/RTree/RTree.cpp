@@ -310,18 +310,21 @@ RTree_node * RTree::select_leaf(RTree_node * node, Polygon * p_region){
     The level will help to draw the path query.
 */
 void RTree::range_search_recursive(RTree_node * node, Polygon & query, std::vector<data_query_return> & ans){
-    if(!node->is_leaf){
-        for(int i = 0; i < node->elements;i++){
-            if(query.intersect_with_BB(*node->data_internal_node[i].region ) || node->data_internal_node[i].region->is_Within_of(query)){
-                //ans.push_back(data_query_return(node->data_internal_node[i].region,node->get_level()));
-                range_search_recursive(node->data_internal_node[i].child,query,ans);
+    if(node != nullptr){
+        if(!node->is_leaf){
+            std::cout<<"****"<<std::endl;
+            for(int i = 0; i < node->elements;i++){
+                if(node->data_internal_node[i].region->intersect_with_BB(query) ){
+                    //ans.push_back(data_query_return(node->data_internal_node[i].region,node->get_level()));
+                    range_search_recursive(node->data_internal_node[i].child,query,ans);
+                }
             }
         }
-    }
-    else{
-        for(int i = 0; i < node->elements; i++){
-            if(node->data_leafs[i].region->is_Within_of(query)){
-                ans.push_back(data_query_return(node->data_leafs[i].polygon,node->get_level()));
+        else{
+            for(int i = 0; i < node->elements; i++){
+                if(node->data_leafs[i].region->is_Within_of(query)){
+                    ans.push_back(data_query_return(node->data_leafs[i].polygon,node->get_level()));
+                }
             }
         }
     }

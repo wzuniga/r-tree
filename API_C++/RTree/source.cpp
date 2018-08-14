@@ -100,7 +100,7 @@ int main(){
     MyR_tree.insert_polygon(&myPol24, &reg24);
     MyR_tree.insert_polygon(&myPol25, &reg25);*/
     RTree MyR_tree(3);
-    Polygon P_2(Point(632,396),2);
+  /*  Polygon P_2(Point(632,396),2);
 Polygon P_4(Point(368,382),4);
 Polygon P_6(Point(436,492),6);
 Polygon P_7(Point(622,514),7);
@@ -178,9 +178,27 @@ MyR_tree.insert_polygon(&myReal_R_13,&reg_real_R_13);
 MyR_tree.insert_polygon(&myReal_R_14,&reg_real_R_14);
 MyR_tree.insert_polygon(&myReal_R_15,&reg_real_R_15);
 MyR_tree.insert_polygon(&myReal_R_16,&reg_real_R_16);
-MyR_tree.insert_polygon(&myReal_R_21,&reg_real_R_21);
+MyR_tree.insert_polygon(&myReal_R_21,&reg_real_R_21);*/
+
+    std::vector<Point> R_1{Point(483,393),Point(500,394),Point(525,375)};
+    std::vector<Point> R_3{Point(613,337),Point(630,357),Point(668,347),Point(662,364)};
+    std::vector<Point> R_5{Point(320,174),Point(319,137),Point(374,135),Point(376,175)};
+    std::vector<Point> R_11{Point(661,184),Point(653,184),Point(654,236),Point(662,236)};
+    Polygon myReal_R_1(R_1,1);
+    Polygon myReal_R_3(R_3,3);
+    Polygon myReal_R_5(R_5,5);
+    Polygon myReal_R_11(R_11,11);
+    Polygon reg_real_R_1=Polygon(myReal_R_1.get_Pmin(),myReal_R_1.get_Pmax());
+    Polygon reg_real_R_3=Polygon(myReal_R_3.get_Pmin(),myReal_R_3.get_Pmax());
+    Polygon reg_real_R_5=Polygon(myReal_R_5.get_Pmin(),myReal_R_5.get_Pmax());
+    Polygon reg_real_R_11=Polygon(myReal_R_11.get_Pmin(),myReal_R_11.get_Pmax());
+
+    MyR_tree.insert_polygon(&myReal_R_1,&reg_real_R_1);
+    MyR_tree.insert_polygon(&myReal_R_3,&reg_real_R_3);
+    MyR_tree.insert_polygon(&myReal_R_5,&reg_real_R_5);
+    MyR_tree.insert_polygon(&myReal_R_11,&reg_real_R_11);
     std::vector<data_query_return > answ;
-    MyR_tree.range_search(Polygon(Point(0,0),Point(500,500)),answ);
+    MyR_tree.range_search(Polygon(Point(476, 408),Point(691, 322)),answ);
 
     std::vector<d_leaf*> ans_knn;
     MyR_tree.k_NN_DF(Point(10,9),3, ans_knn);
