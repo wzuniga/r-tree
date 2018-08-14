@@ -259,8 +259,8 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
                         $scope.regionMemory.push([{"x":c_1[0],"y":c_1[1]},{"x":c_2[0],"y":c_2[1]}, $scope.colorVector[object.level]]);
                     }else{
                         object.elements.forEach( function(polygon) {
-                            console.log("##");
-                            console.log(polygon);
+                            //console.log("##");
+                            //console.log(polygon);
                             if (polygon.length > 1){
                                 var temp = [];
                                 for(var i=0; i<polygon.length; i++)
@@ -268,7 +268,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
                                 $scope.drawRegion(temp, false, $scope.blackColor);
                             }else{
                                 var c_1 = polygon[0];
-                                console.log(c_1[0]);
+                                //console.log(c_1[0]);
                                 $scope.drawPoint({"x":c_1[0],"y":c_1[1]}, false);
                             }
                         });
@@ -289,7 +289,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
         $http.post("/rtree/nearest",{"x":x_v, "y":y_v, "k":k})
             .success(function (data) {
                 console.log(data);
-
+                
             })
             .error(function (data) {
                 alert("Error " + data);

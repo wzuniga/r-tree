@@ -1,4 +1,5 @@
 #include "RTree.hpp"
+#include "iostream"
 /*
     Choose origin when split occurs
 */
@@ -409,6 +410,7 @@ void RTree::showAll_values_JSON(RTree_node *node, int level, std::string &json)
     {
         for(int i=0; i<node->elements; i++)
         {
+            
             json +="{";
             json += "\"level\":"+std::to_string(node->at_level)+",\n";
             json += "\"is_leaf\":"+std::to_string(0)+",\n";
@@ -417,7 +419,8 @@ void RTree::showAll_values_JSON(RTree_node *node, int level, std::string &json)
             json +="["+std::to_string(node->data_internal_node[i].region->get_Pmax().get_X())+","+std::to_string(node->data_internal_node[i].region->get_Pmax().get_Y())+"]\n";
             json +="]}";
             json +=",";
-
+            std::cout << std::to_string(node->data_internal_node[i].region->get_Pmin().get_X())+","+std::to_string(node->data_internal_node[i].region->get_Pmin().get_Y()) << std::endl;
+            std::cout << std::to_string(node->data_internal_node[i].region->get_Pmax().get_X())+","+std::to_string(node->data_internal_node[i].region->get_Pmax().get_Y()) << std::endl;
             showAll_values_JSON(node->data_internal_node[i].child, level+1, json);
 
         }
@@ -446,4 +449,23 @@ void RTree::showAll_values_JSON(RTree_node *node, int level, std::string &json)
             json +=",";
         }
     }
+}
+void RTree::get_polygons_JSON(std::vector<d_leaf*> & ans,std::string &json){
+    json += "[";
+    for(int i=0; i<ans.size(); i++){
+        json +="[";    
+        for(int j = 0; j < ans[i]->polygon->corners;j++){
+           json +="[";
+           json += std::to_string(ans[i]->polygon->get_vertices()[j].get_X());
+           json += ",";
+           json += std::to_string(ans[i]->polygon->get_vertices()[j].get_Y()); 
+           json +="]";
+           if((j+1) != ans[i]->polygon->corners)
+                json +=",";
+        }
+        json +="]";
+        if((i+1) != ans.size())
+            json +=",";
+    }
+    json += "]";
 }

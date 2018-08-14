@@ -93,6 +93,8 @@ class RTree{
     std::string show_values_JSON();
 
     void showAll_values_JSON(RTree_node *father, int level, std::string &);
+
+    void get_polygons_JSON(std::vector<d_leaf*> &, std::string &);
 };
 
 #endif

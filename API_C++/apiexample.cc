@@ -23,11 +23,15 @@ public:
         auto data = jsonInput["data"];
         //auto res = "[{\"level\":0,\"is_leaf\":0,\"elements\":[[100,200],[300,400]]},{\"level\":1,\"is_leaf\":0,\"elements\":[[10,20],[30,40]]},{\"level\":2,\"is_leaf\":1,\"elements\":[[100,200],[100,200],[6,7]]},{\"level\":1,\"is_leaf\":0,\"elements\":[[50,80],[90,150]]},{\"level\":0,\"is_leaf\":0,\"elements\":[[15,25],[35,45]]},{\"level\":2,\"is_leaf\":1,\"elements\":[[524,345],[413,389],[469,492],[561,477],[585,411]]}]";
         std::vector<Point> R_1;
-        for(int i= 0; i < data.size(); i++)
+        for(int i= 0; i < data.size(); i++){
             R_1.push_back(Point(data[i]["x"],data[i]["y"]));
-        Polygon p(R_1,1);
-        Polygon  r(p.get_Pmin(),r.get_Pmax());
-        MyR_tree.insert_polygon(&p,&r);
+            std::cout <<"---"<<std::endl;
+            std::cout <<R_1[i].get_X()<<" " <<R_1[i].get_Y()<<std::endl;
+            //std::cout <<data[i]["y"] <<std::endl;
+        }
+        Polygon * p = new Polygon(R_1,1);
+        Polygon * r = new Polygon(p->get_Pmin(),p->get_Pmax());
+        MyR_tree.insert_polygon(p,r);
         auto res =  MyR_tree.show_values_JSON();
         response << res;
         std::cout << "POST INSERT API x="<<data<<std::endl;
@@ -41,7 +45,11 @@ public:
         auto x = jsonInput["x"];
         auto y = jsonInput["y"];
         auto k = jsonInput["k"];
-        response << "";
+        std::vector<d_leaf*> ans_knn;
+        MyR_tree.k_NN_DF(Point(x,y),k, ans_knn);
+        std::string res="";
+        MyR_tree.get_polygons_JSON( ans_knn,res);
+        response << res;
         std::cout << "POST NEAREST API x="<<x<<" y="<<y<<" k="<<k<<std::endl;
     }
 

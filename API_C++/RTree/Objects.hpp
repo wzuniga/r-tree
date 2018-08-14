@@ -47,12 +47,13 @@ class Polygon{
     Point Pmin;
     Point Pmax;
     int key;
-    int corners;
+    
     //Colection of Points that represent all vertices
     std::vector<Point> vertices;
     void area_added(Polygon &, Point & , Point & );
     
     public:
+    int corners;
     //Initialize the Vertices of Polygon
     Polygon(std::vector<Point> , int) ;
     //It represent a rectangle region.
