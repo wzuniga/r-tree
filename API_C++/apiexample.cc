@@ -59,11 +59,18 @@ public:
 
         auto jsonInput = nlohmann::json::parse(request.getData());
         auto p1 = jsonInput["point1"];
-        auto p2 = jsonInput["point1"];
+        auto p2 = jsonInput["point2"];
 
         std::vector<data_query_return > answ;
         Polygon query(Point(p1["x"],p1["y"]),Point(p2["x"],p2["y"]));
+        std::cout<<query.get_Pmin().get_X()<<"," <<query.get_Pmin().get_Y()<<std::endl;
+        std::cout<<query.get_Pmax().get_X()<<"," <<query.get_Pmax().get_Y()<<std::endl;
         MyR_tree.range_search(query,answ);
+        std::cout<<"....."<<std::endl;
+        std::cout<<answ.size();
+        for(int i = 0; i < answ.size(); i++){
+            std::cout<<answ[i].Pol->corners<<" ";
+        }
         std::string res = "";
         MyR_tree.get_Range_Search_JSON(answ, res);
         response << res;
