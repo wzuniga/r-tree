@@ -180,7 +180,7 @@ MyR_tree.insert_polygon(&myReal_R_15,&reg_real_R_15);
 MyR_tree.insert_polygon(&myReal_R_16,&reg_real_R_16);
 MyR_tree.insert_polygon(&myReal_R_21,&reg_real_R_21);
     std::vector<data_query_return > answ;
-    MyR_tree.range_search(Polygon(Point(0,0),Point(1000,1000)),answ);
+    MyR_tree.range_search(Polygon(Point(0,0),Point(500,500)),answ);
 
     std::vector<d_leaf*> ans_knn;
     MyR_tree.k_NN_DF(Point(10,9),3, ans_knn);

@@ -327,10 +327,19 @@ void RTree::range_search_recursive(RTree_node * node, Polygon & query, std::vect
     }
 }
 void RTree::range_search(Polygon query, std::vector<data_query_return> & ans){
-    Polygon q = query;
-    if(query.get_Pmax() <= query.get_Pmin()){
-        q.set_Polygon(query.get_Pmax(), query.get_Pmin());
-    }
+    int x_min = query.get_Pmin().get_X();
+    int y_min = query.get_Pmin().get_Y();
+    if(query.get_Pmax().get_X() < x_min)
+        x_min = query.get_Pmax().get_X();
+    if(query.get_Pmax().get_Y() < y_min)
+        y_min = query.get_Pmax().get_Y();
+    int x_max = query.get_Pmin().get_X();
+    int y_max = query.get_Pmin().get_Y();
+    if(query.get_Pmax().get_X() > x_max)
+        x_max = query.get_Pmax().get_X();
+    if(query.get_Pmax().get_Y() > y_max)
+        y_max = query.get_Pmax().get_Y();
+    Polygon q(Point(x_min,y_min),Point(x_max,y_max));
     range_search_recursive(this->root, q, ans);
 }
 
