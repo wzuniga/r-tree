@@ -35,7 +35,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
     //general memory
     $scope.regionMemory = [];
     //$scope.colorVector = ['#5f5dbb', '#7495bb', '#74c0bb', '#f18539', '#f1c500', '#81c200', '#83b786'];
-    $scope.colorVector = ['#9900ff', '#0099ff', '#00ff33', "#ffff00"];
+    $scope.colorVector = ['#9900ff', '#0099ff', '#00ff33', "#ff8000"];
     $scope.highlightColor = "#ff0000";
     $scope.blackColor = "#000000";
     $scope.highlightNearestColor = "#ff0000";
@@ -99,6 +99,27 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
             }
         }
     }
+
+    $scope.makeRange = function(event){
+        var x_c = event.offsetX;
+        var y_c = event.offsetY;
+        if($scope.queryModel == 'R' && !$scope.actionMode){
+            $scope.clearCanvas();
+            $scope.reDrawCanvas();
+            if($scope.tempPoint == 0){
+                //$scope.tempPoint = {"x":x_c, "y":y_c};
+                //$scope.drawPoint($scope.tempPoint, true, $scope.highlightColor);
+            }else{
+                var temp = Object.assign({}, $scope.tempPoint);
+                //$scope.drawRange(point_1, point_2, $scope.highlightColor);
+                $scope.queryRange(temp, {"x":x_c, "y":y_c});
+                //$scope.tempPoint = 0;
+            }
+        }else{
+            if(!$scope.actionMode)
+                $scope.queryKnearest(x_c, y_c, $scope.kvalue);
+        }
+    };
 
     $scope.findOnItems = function(items, x, y) {
         for(var i = 0; i < items.length; i++){
@@ -171,10 +192,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
         $scope.memory = [];
         $scope.items = [];
         $scope.indexItems = 1;
-        $scope.regionMemory = [];
-        //$scope.clearCanvas();
-        //$scope.memory.splice(index, 1);
-        //$scope.reDrawCanvas();    
+        $scope.regionMemory = [];  
     };
 
 
