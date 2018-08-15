@@ -7,7 +7,7 @@
 #include <string>
 #include <fstream>
 
-RTree MyR_tree(4);
+RTree * MyR_tree;
 
 class RTreeAPI
 {
@@ -28,8 +28,8 @@ public:
         }
         Polygon * p = new Polygon(R_1);
         Polygon * r = new Polygon(p->get_Pmin(),p->get_Pmax());
-        MyR_tree.insert_polygon(p,r);
-        auto res =  MyR_tree.show_values_JSON();
+        MyR_tree->insert_polygon(p,r);
+        auto res =  MyR_tree->show_values_JSON();
         response << res;
         std::cout << "POST INSERT API x="<<data<<std::endl;
     }
@@ -42,9 +42,9 @@ public:
         auto y = jsonInput["y"];
         auto k = jsonInput["k"];
         std::vector<d_leaf*> ans_knn;
-        MyR_tree.k_NN_DF(Point(x,y),k, ans_knn);
+        MyR_tree->k_NN_DF(Point(x,y),k, ans_knn);
         std::string res="";
-        MyR_tree.get_polygons_JSON( ans_knn,res);
+        MyR_tree->get_polygons_JSON( ans_knn,res);
         response << res;
         std::cout << "POST NEAREST API x="<<x<<" y="<<y<<" k="<<k<<std::endl;
     }
@@ -59,9 +59,9 @@ public:
 
         std::vector<Polygon * > answ;
         Polygon query(Point(p1["x"],p1["y"]),Point(p2["x"],p2["y"]));
-        MyR_tree.range_search(query,answ);
+        MyR_tree->range_search(query,answ);
         std::string res = "";
-        MyR_tree.get_Range_Search_JSON(answ, res);
+        MyR_tree->get_Range_Search_JSON(answ, res);
         response << res;
         std::cout << "POST RANGE API"<<std::endl;
     }
@@ -69,22 +69,27 @@ public:
     void postClear(GloveHttpRequest& request, GloveHttpResponse& response)
     {
         response.contentType("text/json");
+<<<<<<< HEAD
         //delete &MyR_tree;
         MyR_tree = RTree(4);
         std::cout << "POST CLEAR API"<<std::endl;
+=======
+        delete MyR_tree;
+        std::cout << "POST Clear API"<<std::endl;
+>>>>>>> c6afdca75fd97304f21cddbd65ced05ceeb9813f
     }
 
     void postLoad(GloveHttpRequest& request, GloveHttpResponse& response)
     {
         response.contentType("text/json");
-        auto res =  MyR_tree.show_values_JSON();
+        auto res =  MyR_tree->show_values_JSON();
         response << res;
         std::cout << "POST LOAD API"<<std::endl;
     }
 
     void postInsertTest(GloveHttpRequest& request, GloveHttpResponse& response){
 	    response.contentType("text/json");
-    
+    /*
 	    Polygon * P_2 = new Polygon(Point(632,396));
 	    Polygon * P_4 = new Polygon(Point(368,382));
 	    Polygon * P_6 = new Polygon(Point(436,492));
@@ -165,7 +170,7 @@ public:
 	    MyR_tree.insert_polygon(myReal_R_16,reg_real_R_16);
 	    MyR_tree.insert_polygon(myReal_R_21,reg_real_R_21);
         auto res =  MyR_tree.show_values_JSON();
-        response << res;
+        response << res;*/
     }
 
 };
