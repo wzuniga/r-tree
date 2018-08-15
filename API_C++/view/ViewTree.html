@@ -38,7 +38,16 @@
                                 </div>     
                             </div>
                             <br/>
-                            <button class="btn" ng-disabled="!actionMode" ng-click="changeState()" ng-class="classSearch">{{labelSearch}}</button>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button class="btn" ng-disabled="!actionMode" ng-click="changeState()" ng-class="classSearch">{{labelSearch}}</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="checkbox">
+                                            <label><input type="checkbox" ng-disabled="actionMode" ng-model="liveMode">Live</label>
+                                    </div>
+                                </div>
+                            </div> 
                         </div>
                     </div>
                     <div class="panel panel-default">
@@ -50,8 +59,8 @@
                     </div>
                 </div>
             </div>
-            <button class="btn btn-success" ng-click="changeState()">Load Test Data</button>
-            <button class="btn btn-danger" ng-click="changeState()">Clear TRee</button>
+            <button class="btn btn-success" ng-click="clickLoadTest()">Load Test Data</button>
+            <button class="btn btn-danger" ng-click="clickClear()">Clear R-Tree</button>
         </div>
         <script src="rtree/js/angular.min.js"></script>
         <script src="rtree/js/controller.js"></script>

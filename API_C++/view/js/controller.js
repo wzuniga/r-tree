@@ -42,7 +42,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
 
     //range
     $scope.tempPoint = 0;
-    //$scope.
+    $scope.liveMode = false;
 
     $scope.changeState = function(){
         $scope.actionMode = !$scope.actionMode;
@@ -103,20 +103,16 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
     $scope.makeRange = function(event){
         var x_c = event.offsetX;
         var y_c = event.offsetY;
-        if($scope.queryModel == 'R' && !$scope.actionMode){
+        if($scope.queryModel == 'R' && !$scope.actionMode && $scope.liveMode){
             $scope.clearCanvas();
             $scope.reDrawCanvas();
-            if($scope.tempPoint == 0){
-                //$scope.tempPoint = {"x":x_c, "y":y_c};
-                //$scope.drawPoint($scope.tempPoint, true, $scope.highlightColor);
-            }else{
+            if($scope.tempPoint != 0){
                 var temp = Object.assign({}, $scope.tempPoint);
-                //$scope.drawRange(point_1, point_2, $scope.highlightColor);
+                $scope.drawRange(temp, {"x":x_c, "y":y_c}, $scope.highlightColor);
                 $scope.queryRange(temp, {"x":x_c, "y":y_c});
-                //$scope.tempPoint = 0;
             }
         }else{
-            if(!$scope.actionMode)
+            if(!$scope.actionMode && $scope.liveMode)
                 $scope.queryKnearest(x_c, y_c, $scope.kvalue);
         }
     };
@@ -441,4 +437,56 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
     $scope.euclidean = function(point1, point2){
         return Math.sqrt(Math.pow(point2.x-point1.x,2)+Math.pow(point2.y-point1.y,2));
     };
+
+    $scope.clickLoadTest = function(){
+        
+        $http.post("/rtree/test",{})
+            .success(function (data) {
+                console.log(data);
+                $scope.deleteOnMemory();
+                $scope.clearCanvas();
+                //$scope.reDrawCanvas();
+                data.forEach( function(object, indice, array) {
+                    //console.log("En el índice " + indice + " hay este valor: " + object);
+                    if(object.is_leaf == "0"){
+                        var c_1 = object.elements[0];
+                        var c_2 = object.elements[1];
+                        $scope.drawRectagle({"x":c_1[0],"y":c_1[1]},{"x":c_2[0],"y":c_2[1]}, $scope.colorVector[object.level], object.key);
+                        $scope.regionMemory.push([{"x":c_1[0],"y":c_1[1]},{"x":c_2[0],"y":c_2[1]}, $scope.colorVector[object.level], object.key]);
+                    }else{
+                        object.elements.forEach( function(polygon) {
+                            //console.log("##");
+                            //console.log(polygon);
+                            if (polygon.length > 1){
+                                var temp = [];
+                                for(var i=0; i<polygon.length; i++)
+                                    temp.push({"x":polygon[i][0],"y":polygon[i][1]});
+                                $scope.putOnMemory(temp, "R");
+                                $scope.drawRegion(temp, false, $scope.blackColor);
+                            }else{
+                                var c_1 = polygon[0];
+                                $scope.putOnMemory({"x":c_1[0],"y":c_1[1]}, "P");
+                                $scope.drawPoint({"x":c_1[0],"y":c_1[1]}, false, "");
+                            }
+                        });
+                    }
+                });
+            })
+            .error(function (data) {
+                alert("Error " + data);
+            }
+        );
+    };
+
+    $scope.clickClear = function(){
+        $http.post("/rtree/clear",{})
+            .success(function (data) {
+                $scope.deleteOnMemory();
+                $scope.clearCanvas();
+            })
+            .error(function (data) {
+                alert("Error " + data);
+            }
+        );
+    }
 });

@@ -25,8 +25,6 @@ public:
         std::vector<Point> R_1;
         for(int i= 0; i < data.size(); i++){
             R_1.push_back(Point(data[i]["x"],data[i]["y"]));
-            std::cout <<R_1[i].get_X()<<" " <<R_1[i].get_Y()<<std::endl;
-            //std::cout <<data[i]["y"] <<std::endl;
         }
         Polygon * p = new Polygon(R_1);
         Polygon * r = new Polygon(p->get_Pmin(),p->get_Pmax());
@@ -39,7 +37,6 @@ public:
     void postNearest(GloveHttpRequest& request, GloveHttpResponse& response)
     {
         response.contentType("text/json");
-        //auto res = "{'1':[[[1,2],[1,2]]]}";
         auto jsonInput = nlohmann::json::parse(request.getData());
         auto x = jsonInput["x"];
         auto y = jsonInput["y"];
@@ -62,19 +59,18 @@ public:
 
         std::vector<Polygon * > answ;
         Polygon query(Point(p1["x"],p1["y"]),Point(p2["x"],p2["y"]));
-        //std::cout<<query.get_Pmin().get_X()<<"," <<query.get_Pmin().get_Y()<<std::endl;
-        //std::cout<<query.get_Pmax().get_X()<<"," <<query.get_Pmax().get_Y()<<std::endl;
         MyR_tree.range_search(query,answ);
-        //std::cout<<"....."<<std::endl;
-        //std::cout<<answ.size();
-        //for(int i = 0; i < answ.size(); i++){
-        //    std::cout<<answ[i].Pol->corners<<" ";
-        //}
         std::string res = "";
         MyR_tree.get_Range_Search_JSON(answ, res);
         response << res;
         std::cout << "POST Range API"<<std::endl;
-        //std::cout <<res<<std::endl;
+    }
+
+    void postClear(GloveHttpRequest& request, GloveHttpResponse& response)
+    {
+        response.contentType("text/json");
+        MyR_tree = RTree(4);
+        std::cout << "POST Clear API"<<std::endl;
     }
 
     void postInsertTest(GloveHttpRequest& request, GloveHttpResponse& response){
@@ -229,7 +225,13 @@ int main(int argc, char *argv[])
         std::bind(&RTreeAPI::postInsertTest, &rtree, ph::_1, ph::_2)
     );
 
-    std::cout << "READY"<<std::endl;
+    serv.addRest("/rtree/clear", 1,
+        GloveHttpServer::jsonApiErrorCall,
+        std::bind(&RTreeAPI::get, &rtree, ph::_1, ph::_2),
+        std::bind(&RTreeAPI::postClear, &rtree, ph::_1, ph::_2)
+    );
+
+    std::cout << "READY WEB SERVER"<<std::endl;
 
     while(1)
         std::this_thread::sleep_for(std::chrono::seconds(1));
