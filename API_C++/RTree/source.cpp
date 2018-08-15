@@ -210,6 +210,6 @@ MyR_tree.insert_polygon(&myReal_R_21,&reg_real_R_21);
     std::string jsn ="";
     MyR_tree.get_Range_Search_JSON(answ,jsn);
     std::cout << jsn<<std::endl;
-
+    delete &MyR_tree;
     int xx = 22;
 }
