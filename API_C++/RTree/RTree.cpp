@@ -381,7 +381,6 @@ void RTree::DFT_recursive(Point q, int k, RTree_node * node, std::vector<d_leaf 
     else{
 	    std::vector<float> branch_value;
 		std::vector<RTree_node *> branch;
-        std::cout<<std::endl<<"new branch is: ";
         for(int i = 0; i < node->elements; i++){
 	        branch_value.push_back(node->data_internal_node[i].region->distance_geometric(q));
             branch.push_back(node->data_internal_node[i].child);
@@ -413,7 +412,7 @@ void RTree::insert_sort(std::vector<float> & dtmp, std::vector<T*> & chld){
 void RTree::k_NN_DF(Point q, int k, std::vector<d_leaf*> &L){
     std::vector<float> dk;
     float poor = std::numeric_limits<float>::max();
-    std::cout<<std::endl<<poor<<std::endl;
+    //std::cout<<std::endl<<poor<<std::endl;
     if(this->root != nullptr)
         DFT_recursive(q, k, this->root,L,dk,poor);
 }
@@ -421,15 +420,20 @@ void RTree::k_NN_DF(Point q, int k, std::vector<d_leaf*> &L){
 std::string RTree::show_values_JSON()
 {
     std::string json = "";
-    showAll_values_JSON(this->root, 0, json);
-    json.erase(json.length()-1);
+
+    if(this->root != nullptr)
+        showAll_values_JSON(this->root, 0, json);
+    if(json.length() != 0)
+        json.erase(json.length()-1);
     return "["+json+"]";
 }
 
 void RTree::showAll_values_JSON(RTree_node *node, int level, std::string &json)
 {
+    std::cout<<"json"<<std::endl;
     if(!node->is_leaf)
     {
+        std::cout<<"no leaf"<<std::endl;
         for(int i=0; i<node->elements; i++)
         {
             
@@ -450,6 +454,7 @@ void RTree::showAll_values_JSON(RTree_node *node, int level, std::string &json)
     }
     else
     {
+        std::cout<<"leaf"<<std::endl;
         //std::cout << "ELEMENTS" << std::endl;
         for(int i=0; i<node->elements; i++)
         {
