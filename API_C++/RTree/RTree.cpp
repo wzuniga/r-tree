@@ -527,3 +527,23 @@ void RTree::get_Range_Search_JSON(const std::vector<Polygon *> & data, std::stri
     }
     json += "]";
 }
+
+RTree::~RTree(){
+    if(this->root != nullptr)
+        delete this->root;
+}
+RTree_node::~RTree_node(){
+    if(!this->is_leaf){
+        for(int i = 0; i < this->elements; i++){
+            delete this->data_internal_node[i].child;
+        }
+    }
+    else{
+        for(int i = 0; i < this->elements; i++){
+            if(this->data_leafs[i].polygon!=nullptr){
+                delete this->data_leafs[i].polygon;
+                delete this->data_leafs[i].region;
+            }
+        }
+    }
+}

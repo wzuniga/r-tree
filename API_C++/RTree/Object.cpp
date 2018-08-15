@@ -1,7 +1,7 @@
 #include "Objects.hpp"
 #include <math.h>
 #include <stdlib.h>
-
+#include <iostream>
 Polygon::Polygon(std::vector<Point> p):vertices(p), key(-1),corners(p.size()){
     Polygon mbb = this->get_mbb();
     this->Pmin = mbb.Pmin;
@@ -161,4 +161,8 @@ bool Polygon::set_key(int k){
         return true;
     }
     return false;
+}
+
+Polygon::~Polygon(){
+    std::cout << "Polygon will be deleted "<<this->key<<std::endl;
 }

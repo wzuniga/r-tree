@@ -79,5 +79,7 @@ class Polygon{
     std::vector<Point> get_vertices();
     bool set_key(int );
     int get_key(){return this->key;}
+
+    ~Polygon();
 };
 #endif
