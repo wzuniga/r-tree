@@ -22,8 +22,8 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
     
     // mode
     $scope.actionMode = true;
-    $scope.classInput = 'btn-info';
-    $scope.classSearch = 'btn-warning';
+    $scope.classInput = 'btn-default';
+    $scope.classSearch = 'btn-info';
     $scope.labelInsert = 'On insert';
     $scope.labelSearch = 'Choose Me';
 
@@ -38,7 +38,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
     $scope.colorVector = ['#9900ff', '#0099ff', '#00ff33', "#ffff00"];
     $scope.highlightColor = "#ff0000";
     $scope.blackColor = "#000000";
-    $scope.highlightNearestColor = "#00FF00";
+    $scope.highlightNearestColor = "#ff0000";
 
     //range
     $scope.tempPoint = 0;
@@ -171,6 +171,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
         $scope.memory = [];
         $scope.items = [];
         $scope.indexItems = 1;
+        $scope.regionMemory = [];
         //$scope.clearCanvas();
         //$scope.memory.splice(index, 1);
         //$scope.reDrawCanvas();    

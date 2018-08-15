@@ -20,7 +20,7 @@
                                 <option value="1">Polygon</option>
                             </select>
                             <br/>
-                            <button class="btn btn-info" ng-disabled="actionMode" ng-click="changeState()" ng-class="classInput">{{labelInsert}}</button>
+                            <button class="btn" ng-disabled="actionMode" ng-click="changeState()" ng-class="classInput">{{labelInsert}}</button>
                         </div>
                     </div>
                     <div class="panel panel-default">
@@ -38,7 +38,7 @@
                                 </div>     
                             </div>
                             <br/>
-                            <button class="btn btn-info" ng-disabled="!actionMode" ng-click="changeState()" ng-class="classSearch">{{labelSearch}}</button>
+                            <button class="btn" ng-disabled="!actionMode" ng-click="changeState()" ng-class="classSearch">{{labelSearch}}</button>
                         </div>
                     </div>
                     <div class="panel panel-default">
@@ -50,6 +50,8 @@
                     </div>
                 </div>
             </div>
+            <button class="btn btn-success" ng-click="changeState()">Load Test Data</button>
+            <button class="btn btn-danger" ng-click="changeState()">Clear TRee</button>
         </div>
         <script src="rtree/js/angular.min.js"></script>
         <script src="rtree/js/controller.js"></script>
