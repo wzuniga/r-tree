@@ -7,7 +7,7 @@
 #include <string>
 #include <fstream>
 
-RTree MyR_tree(3);
+RTree MyR_tree(4);
 
 class RTreeAPI
 {
@@ -25,7 +25,6 @@ public:
         std::vector<Point> R_1;
         for(int i= 0; i < data.size(); i++){
             R_1.push_back(Point(data[i]["x"],data[i]["y"]));
-            std::cout <<"---"<<std::endl;
             std::cout <<R_1[i].get_X()<<" " <<R_1[i].get_Y()<<std::endl;
             //std::cout <<data[i]["y"] <<std::endl;
         }
@@ -61,7 +60,7 @@ public:
         auto p1 = jsonInput["point1"];
         auto p2 = jsonInput["point2"];
 
-        std::vector<data_query_return > answ;
+        std::vector<Polygon * > answ;
         Polygon query(Point(p1["x"],p1["y"]),Point(p2["x"],p2["y"]));
         //std::cout<<query.get_Pmin().get_X()<<"," <<query.get_Pmin().get_Y()<<std::endl;
         //std::cout<<query.get_Pmax().get_X()<<"," <<query.get_Pmax().get_Y()<<std::endl;

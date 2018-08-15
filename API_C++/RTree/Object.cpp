@@ -44,6 +44,10 @@ int Polygon::cost_two_poligons(Polygon & reg){
 }
 
 bool Polygon::intersect_with_BB(Polygon & pol){
+    if(pol.traberse_with(*this))
+        return true;
+    if(pol.is_Within_of(*this))
+        return true;
     if(this->Pmin <= pol.Pmax && this->Pmin >= pol.Pmin){
             return true;
     }
@@ -60,12 +64,9 @@ bool Polygon::intersect_with_BB(Polygon & pol){
     if(myPoint_right_L <= BB_point_leftUP && myPoint_right_L >= BB_point_right_L){
         return true;
     }
-    if(this->traberse_with(pol))
-        return true;
-    if(pol.traberse_with(*this))
-        return true;
-    if(pol.is_Within_of(*this))
-        return true;
+    //if(this->traberse_with(pol))
+    //    return true;
+    
     return false;
 }
 

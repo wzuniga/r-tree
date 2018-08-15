@@ -317,7 +317,7 @@ RTree_node * RTree::select_leaf(RTree_node * node, Polygon * p_region){
     It returns all the path Regions & Polygons Pointers and its respective level.
     The level will help to draw the path query.
 */
-void RTree::range_search_recursive(RTree_node * node, Polygon & query, std::vector<data_query_return> & ans){
+void RTree::range_search_recursive(RTree_node * node, Polygon & query, std::vector<Polygon *> & ans){
     if(node != nullptr){
         if(!node->is_leaf){
             for(int i = 0; i < node->elements;i++){
@@ -330,13 +330,13 @@ void RTree::range_search_recursive(RTree_node * node, Polygon & query, std::vect
         else{
             for(int i = 0; i < node->elements; i++){
                 if(node->data_leafs[i].region->is_Within_of(query)){
-                    ans.push_back(data_query_return(node->data_leafs[i].polygon,node->get_level()));
+                    ans.push_back(node->data_leafs[i].polygon);
                 }
             }
         }
     }
 }
-void RTree::range_search(Polygon query, std::vector<data_query_return> & ans){
+void RTree::range_search(Polygon query, std::vector<Polygon *> & ans){
     int x_min = query.get_Pmin().get_X();
     int y_min = query.get_Pmin().get_Y();
     if(query.get_Pmax().get_X() < x_min)
@@ -378,8 +378,8 @@ void RTree::DFT_recursive(Point q, int k, RTree_node * node, std::vector<d_leaf 
         }
     }
     else{
-	    std::vector<float> branch_value(node->elements,std::numeric_limits<float>::max());
-		std::vector<RTree_node *> branch(node->elements);
+	    std::vector<float> branch_value;
+		std::vector<RTree_node *> branch;
 		float max_current=0;
         for(int i = 0; i < node->elements; i++){
 	        branch_value.push_back(node->data_internal_node[i].region->distance_geometric(q));
@@ -443,8 +443,8 @@ void RTree::showAll_values_JSON(RTree_node *node, int level, std::string &json)
             json +="["+std::to_string(node->data_internal_node[i].region->get_Pmax().get_X())+","+std::to_string(node->data_internal_node[i].region->get_Pmax().get_Y())+"]\n";
             json +="]}";
             json +=",";
-            std::cout << std::to_string(node->data_internal_node[i].region->get_Pmin().get_X())+","+std::to_string(node->data_internal_node[i].region->get_Pmin().get_Y()) << std::endl;
-            std::cout << std::to_string(node->data_internal_node[i].region->get_Pmax().get_X())+","+std::to_string(node->data_internal_node[i].region->get_Pmax().get_Y()) << std::endl;
+            //std::cout << std::to_string(node->data_internal_node[i].region->get_Pmin().get_X())+","+std::to_string(node->data_internal_node[i].region->get_Pmin().get_Y()) << std::endl;
+            //std::cout << std::to_string(node->data_internal_node[i].region->get_Pmax().get_X())+","+std::to_string(node->data_internal_node[i].region->get_Pmax().get_Y()) << std::endl;
             showAll_values_JSON(node->data_internal_node[i].child, level+1, json);
 
         }
@@ -494,39 +494,27 @@ void RTree::get_polygons_JSON(const std::vector<d_leaf*> & ans,std::string &json
     json += "]";
 }
 
-void RTree::get_Range_Search_JSON(const std::vector<data_query_return> & data, std::string &json){
+void RTree::get_Range_Search_JSON(const std::vector<Polygon *> & data, std::string &json){
     json += "[";
     for(int i=0; i<data.size(); i++){
         json +="[";
         json +="{";
         json +="\"elements\":[";    
-        if(data[i].lvl != 0){
-                json += "[";
-                json += std::to_string(data[i].Pol->get_Pmin().get_X());
-                json += ",";
-                json += std::to_string(data[i].Pol->get_Pmin().get_Y());
-                json += "],[";
-                json += std::to_string(data[i].Pol->get_Pmax().get_X());
-                json += ",";
-                json += std::to_string(data[i].Pol->get_Pmax().get_Y());
-                json += "]";
-        }
-        else{
+        auto dat = data[i]->get_vertices();
+        for(int j = 0; j < dat.size(); j++){
+            json +="[";  
             
-            for(int j = 0; j < data[i].Pol->corners; j++){
-                json +="[";  
-                
-                json += std::to_string(data[i].Pol->get_vertices()[j].get_X());
-                json += ",";
-                json += std::to_string(data[i].Pol->get_vertices()[j].get_Y()); 
-            
-                json +="]";
-                if((j+1) != data[i].Pol->corners)
-                        json +=",";
-            }            
-        }
+            json += std::to_string(dat[j].get_X());
+            json += ",";
+            json += std::to_string(dat[j].get_Y()); 
+        
+            json +="]";
+            if((j+1) != dat.size())
+                    json +=",";
+        }            
+    
         json +="],";
-        json+="\"level\":"+std::to_string(data[i].lvl);
+        json+="\"level\":"+std::to_string(0);
         json += "}";
 
         json +="]";

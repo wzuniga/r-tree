@@ -70,7 +70,7 @@ class RTree{
     //Adjust the tree after of insert a polygon
     void adjust_tree(RTree_node *, RTree_node * );
     //Recursive Range Search.
-    void range_search_recursive(RTree_node * , Polygon & , std::vector<data_query_return> &);
+    void range_search_recursive(RTree_node * , Polygon & , std::vector<Polygon *> &);
 
     //Mothods to get KNN
     //Recursive count of elements to implement a heuristic in KNN-querys.
@@ -85,7 +85,7 @@ class RTree{
     //Insert Polygon in Front-end
     bool insert_polygon(Polygon * , Polygon *);
     //Range search in Front
-    void range_search(Polygon , std::vector<data_query_return> &);
+    void range_search(Polygon , std::vector<Polygon *> &);
     
     
     //get the k-nearest neighbor Polygons.
@@ -97,7 +97,7 @@ class RTree{
 
     void get_polygons_JSON(const std::vector<d_leaf*> &, std::string &);
 
-    void get_Range_Search_JSON(const std::vector<data_query_return> &, std::string &);
+    void get_Range_Search_JSON(const std::vector<Polygon *> &, std::string &);
 };
 
 #endif
