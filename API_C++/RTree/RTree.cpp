@@ -536,6 +536,8 @@ RTree_node::~RTree_node(){
     if(!this->is_leaf){
         for(int i = 0; i < this->elements; i++){
             delete this->data_internal_node[i].child;
+            this->data_internal_node[i].child = nullptr;
+            delete this->data_internal_node[i].region;
         }
     }
     else{
