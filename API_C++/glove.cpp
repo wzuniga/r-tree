@@ -734,7 +734,7 @@ void GloveBase::_send(const std::string &data)
       else
 #endif
 	// msg_nosignal avoid systems signals
-
+  
 	bytes_sent = SEND( conn.sockfd, out.c_str(), out.size(), 10);
       if (bytes_sent == -1)
 	{

@@ -2,63 +2,31 @@
 r-tree implementation in python and c++ core.
 
 ## Getting Started
-To run the project we need to install some python packages.
+To run the project you need a Linux OS
 
 ### Prerequisites
 
-First be sure, you have installed python3.
+Install make to run MakeFile if you need
 ```
-sudo apt-get install python3.6
-```
-
-You need to create a new directory and entrer there.
-```
-mkdir r-tree
-cd r-tree
-```
-
-Now we need a virtualenv to avoid version problems
-```
-sudo apt-get install python3-venv
-python3 -m venv myworkvenv
-source myworkvenv/bin/activate
-```
-
-Now we'll install django, the server choosed
-```
-pip install django==1.8
-```
-
-esto nos mostrará un mensaje como el siguiente
-```
-(myworkvenv) ~$ pip install django==1.8
-Downloading/unpacking django==1.8
-Installing collected packages: django
-Successfully installed django
-Cleaning up...
-```
-
-avoid these instructions
-```
-django-admin.py startproject WebApplication .
-python manage.py startapp blog
-```
-
-Here clone the project github and run on terminal
-```
-python manage.py migrate
-python manage.py runserverls
 
 ```
 
-Look your site on
-```
-http://127.0.0.1:8000/
-```
-
-
-
-RUN C ++ API
+### RUN C++ API
+If you use MakeFile just run the next step
 ```
 make
 ```
+Or
+```
+g++ -o API_C++/apiexample2 API_C++/apiexample.cc API_C++/glovehttpserver.cpp API_C++/glove.cpp API_C++/glovewebsockets.cpp API_C++/glovecoding.cpp API_C++/glovehttpcommon.cpp API_C++/RTree/RTree.cpp API_C++/RTree/Object.cpp -lpthread -DENABLE_OPENSSL=0 -DENABLE_COMPRESSION=0 -std=c++11 -O3
+```
+and execute
+```
+./API_C++/apiexample2
+```
+
+### Open Application
+Look the application on
+
+* [Server Link](http://127.0.0.1:8080/) - click to open
+
