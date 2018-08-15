@@ -163,6 +163,5 @@ bool Polygon::set_key(int k){
     return false;
 }
 
-Polygon::~Polygon(){
-    std::cout << "Polygon will be deleted "<<this->key<<std::endl;
+Polygon::~Polygon(){    
 }

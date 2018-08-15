@@ -84,7 +84,7 @@ public:
 
     void postInsertTest(GloveHttpRequest& request, GloveHttpResponse& response){
 	    response.contentType("text/json");
-    /*
+    
 	    Polygon * P_2 = new Polygon(Point(632,396));
 	    Polygon * P_4 = new Polygon(Point(368,382));
 	    Polygon * P_6 = new Polygon(Point(436,492));
@@ -109,17 +109,17 @@ public:
 	    Polygon * P_20_reg = new Polygon(P_20->get_Pmin(),P_20->get_Pmax());
 	    Polygon * P_22_reg = new Polygon(P_22->get_Pmin(),P_22->get_Pmax());
 
-	    MyR_tree.insert_polygon(P_2,P_2_reg);
-	    MyR_tree.insert_polygon(P_4,P_4_reg);
-	    MyR_tree.insert_polygon(P_6,P_6_reg);
-	    MyR_tree.insert_polygon(P_7,P_7_reg);
-	    MyR_tree.insert_polygon(P_8,P_8_reg);
-	    MyR_tree.insert_polygon(P_10,P_10_reg);
-	    MyR_tree.insert_polygon(P_17,P_17_reg);
-	    MyR_tree.insert_polygon(P_18,P_18_reg);
-	    MyR_tree.insert_polygon(P_19,P_19_reg);
-	    MyR_tree.insert_polygon(P_20,P_20_reg);
-	    MyR_tree.insert_polygon(P_22,P_22_reg);
+	    MyR_tree->insert_polygon(P_2,P_2_reg);
+	    MyR_tree->insert_polygon(P_4,P_4_reg);
+	    MyR_tree->insert_polygon(P_6,P_6_reg);
+	    MyR_tree->insert_polygon(P_7,P_7_reg);
+	    MyR_tree->insert_polygon(P_8,P_8_reg);
+	    MyR_tree->insert_polygon(P_10,P_10_reg);
+	    MyR_tree->insert_polygon(P_17,P_17_reg);
+	    MyR_tree->insert_polygon(P_18,P_18_reg);
+	    MyR_tree->insert_polygon(P_19,P_19_reg);
+	    MyR_tree->insert_polygon(P_20,P_20_reg);
+	    MyR_tree->insert_polygon(P_22,P_22_reg);
 
 	    std::vector<Point> R_1{Point(528,355),Point(555,355),Point(555,402),Point(529,402)};
 	    std::vector<Point> R_3{Point(360,462),Point(448,462),Point(448,412),Point(358,414)};
@@ -154,18 +154,18 @@ public:
 	    Polygon * reg_real_R_16 = new Polygon(myReal_R_16->get_Pmin(),myReal_R_16->get_Pmax());
 	    Polygon * reg_real_R_21 = new Polygon(myReal_R_21->get_Pmin(),myReal_R_21->get_Pmax());
 
-	    MyR_tree.insert_polygon(myReal_R_1, reg_real_R_1);
-	    MyR_tree.insert_polygon(myReal_R_3, reg_real_R_3);
-	    MyR_tree.insert_polygon(myReal_R_5, reg_real_R_5);
-	    MyR_tree.insert_polygon(myReal_R_11,reg_real_R_11);
-	    MyR_tree.insert_polygon(myReal_R_12,reg_real_R_12);
-	    MyR_tree.insert_polygon(myReal_R_13,reg_real_R_13);
-	    MyR_tree.insert_polygon(myReal_R_14,reg_real_R_14);
-	    MyR_tree.insert_polygon(myReal_R_15,reg_real_R_15);
-	    MyR_tree.insert_polygon(myReal_R_16,reg_real_R_16);
-	    MyR_tree.insert_polygon(myReal_R_21,reg_real_R_21);
-        auto res =  MyR_tree.show_values_JSON();
-        response << res;*/
+	    MyR_tree->insert_polygon(myReal_R_1, reg_real_R_1);
+	    MyR_tree->insert_polygon(myReal_R_3, reg_real_R_3);
+	    MyR_tree->insert_polygon(myReal_R_5, reg_real_R_5);
+	    MyR_tree->insert_polygon(myReal_R_11,reg_real_R_11);
+	    MyR_tree->insert_polygon(myReal_R_12,reg_real_R_12);
+	    MyR_tree->insert_polygon(myReal_R_13,reg_real_R_13);
+	    MyR_tree->insert_polygon(myReal_R_14,reg_real_R_14);
+	    MyR_tree->insert_polygon(myReal_R_15,reg_real_R_15);
+	    MyR_tree->insert_polygon(myReal_R_16,reg_real_R_16);
+	    MyR_tree->insert_polygon(myReal_R_21,reg_real_R_21);
+        auto res =  MyR_tree->show_values_JSON();
+        response << res;
     }
 
 };

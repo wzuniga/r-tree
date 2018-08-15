@@ -538,13 +538,16 @@ RTree_node::~RTree_node(){
             delete this->data_internal_node[i].child;
             this->data_internal_node[i].child = nullptr;
             delete this->data_internal_node[i].region;
+            this->data_internal_node[i].region = nullptr;
         }
     }
     else{
         for(int i = 0; i < this->elements; i++){
             if(this->data_leafs[i].polygon!=nullptr){
                 delete this->data_leafs[i].polygon;
+                this->data_leafs[i].polygon = nullptr;
                 delete this->data_leafs[i].region;
+                this->data_leafs[i].region = nullptr;
             }
         }
     }
