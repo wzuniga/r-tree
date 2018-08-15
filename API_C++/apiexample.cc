@@ -7,7 +7,7 @@
 #include <string>
 #include <fstream>
 
-RTree MyR_tree(4);
+RTree * MyR_tree;
 
 class RTreeAPI
 {
@@ -28,8 +28,8 @@ public:
         }
         Polygon * p = new Polygon(R_1);
         Polygon * r = new Polygon(p->get_Pmin(),p->get_Pmax());
-        MyR_tree.insert_polygon(p,r);
-        auto res =  MyR_tree.show_values_JSON();
+        MyR_tree->insert_polygon(p,r);
+        auto res =  MyR_tree->show_values_JSON();
         response << res;
         std::cout << "POST INSERT API x="<<data<<std::endl;
     }
@@ -42,9 +42,9 @@ public:
         auto y = jsonInput["y"];
         auto k = jsonInput["k"];
         std::vector<d_leaf*> ans_knn;
-        MyR_tree.k_NN_DF(Point(x,y),k, ans_knn);
+        MyR_tree->k_NN_DF(Point(x,y),k, ans_knn);
         std::string res="";
-        MyR_tree.get_polygons_JSON( ans_knn,res);
+        MyR_tree->get_polygons_JSON( ans_knn,res);
         response << res;
         std::cout << "POST NEAREST API x="<<x<<" y="<<y<<" k="<<k<<std::endl;
     }
@@ -59,9 +59,9 @@ public:
 
         std::vector<Polygon * > answ;
         Polygon query(Point(p1["x"],p1["y"]),Point(p2["x"],p2["y"]));
-        MyR_tree.range_search(query,answ);
+        MyR_tree->range_search(query,answ);
         std::string res = "";
-        MyR_tree.get_Range_Search_JSON(answ, res);
+        MyR_tree->get_Range_Search_JSON(answ, res);
         response << res;
         std::cout << "POST Range API"<<std::endl;
     }
@@ -69,7 +69,7 @@ public:
     void postClear(GloveHttpRequest& request, GloveHttpResponse& response)
     {
         response.contentType("text/json");
-        MyR_tree = RTree(4);
+        delete MyR_tree;
         std::cout << "POST Clear API"<<std::endl;
     }
 

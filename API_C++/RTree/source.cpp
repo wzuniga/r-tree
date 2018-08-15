@@ -99,7 +99,7 @@ int main(){
     MyR_tree.insert_polygon(&myPol23, &reg23);
     MyR_tree.insert_polygon(&myPol24, &reg24);
     MyR_tree.insert_polygon(&myPol25, &reg25);*/
-    RTree MyR_tree(3);
+    RTree * MyR_tree = new RTree(3);
     Polygon P_2(Point(632,396),2);
 Polygon P_4(Point(368,382),4);
 Polygon P_6(Point(436,492),6);
@@ -124,17 +124,17 @@ Polygon P_19_reg(P_19.get_Pmin(),P_19.get_Pmax());
 Polygon P_20_reg(P_20.get_Pmin(),P_20.get_Pmax());
 Polygon P_22_reg(P_22.get_Pmin(),P_22.get_Pmax());
 
-MyR_tree.insert_polygon(&P_2,&P_2_reg);
-MyR_tree.insert_polygon(&P_4,&P_4_reg);
-MyR_tree.insert_polygon(&P_6,&P_6_reg);
-MyR_tree.insert_polygon(&P_7,&P_7_reg);
-MyR_tree.insert_polygon(&P_8,&P_8_reg);
-MyR_tree.insert_polygon(&P_10,&P_10_reg);
-MyR_tree.insert_polygon(&P_17,&P_17_reg);
-MyR_tree.insert_polygon(&P_18,&P_18_reg);
-MyR_tree.insert_polygon(&P_19,&P_19_reg);
-MyR_tree.insert_polygon(&P_20,&P_20_reg);
-MyR_tree.insert_polygon(&P_22,&P_22_reg);
+MyR_tree->insert_polygon(&P_2,&P_2_reg);
+MyR_tree->insert_polygon(&P_4,&P_4_reg);
+MyR_tree->insert_polygon(&P_6,&P_6_reg);
+MyR_tree->insert_polygon(&P_7,&P_7_reg);
+MyR_tree->insert_polygon(&P_8,&P_8_reg);
+MyR_tree->insert_polygon(&P_10,&P_10_reg);
+MyR_tree->insert_polygon(&P_17,&P_17_reg);
+MyR_tree->insert_polygon(&P_18,&P_18_reg);
+MyR_tree->insert_polygon(&P_19,&P_19_reg);
+MyR_tree->insert_polygon(&P_20,&P_20_reg);
+MyR_tree->insert_polygon(&P_22,&P_22_reg);
 
 std::vector<Point> R_1{Point(528,355),Point(555,355),Point(555,402),Point(529,402)};
 std::vector<Point> R_3{Point(360,462),Point(448,462),Point(448,412),Point(358,414)};
@@ -169,16 +169,16 @@ Polygon reg_real_R_15=Polygon(myReal_R_15.get_Pmin(),myReal_R_15.get_Pmax());
 Polygon reg_real_R_16=Polygon(myReal_R_16.get_Pmin(),myReal_R_16.get_Pmax());
 Polygon reg_real_R_21=Polygon(myReal_R_21.get_Pmin(),myReal_R_21.get_Pmax());
 
-MyR_tree.insert_polygon(&myReal_R_1,&reg_real_R_1);
-MyR_tree.insert_polygon(&myReal_R_3,&reg_real_R_3);
-MyR_tree.insert_polygon(&myReal_R_5,&reg_real_R_5);
-MyR_tree.insert_polygon(&myReal_R_11,&reg_real_R_11);
-MyR_tree.insert_polygon(&myReal_R_12,&reg_real_R_12);
-MyR_tree.insert_polygon(&myReal_R_13,&reg_real_R_13);
-MyR_tree.insert_polygon(&myReal_R_14,&reg_real_R_14);
-MyR_tree.insert_polygon(&myReal_R_15,&reg_real_R_15);
-MyR_tree.insert_polygon(&myReal_R_16,&reg_real_R_16);
-MyR_tree.insert_polygon(&myReal_R_21,&reg_real_R_21);
+MyR_tree->insert_polygon(&myReal_R_1,&reg_real_R_1);
+MyR_tree->insert_polygon(&myReal_R_3,&reg_real_R_3);
+MyR_tree->insert_polygon(&myReal_R_5,&reg_real_R_5);
+MyR_tree->insert_polygon(&myReal_R_11,&reg_real_R_11);
+MyR_tree->insert_polygon(&myReal_R_12,&reg_real_R_12);
+MyR_tree->insert_polygon(&myReal_R_13,&reg_real_R_13);
+MyR_tree->insert_polygon(&myReal_R_14,&reg_real_R_14);
+MyR_tree->insert_polygon(&myReal_R_15,&reg_real_R_15);
+MyR_tree->insert_polygon(&myReal_R_16,&reg_real_R_16);
+MyR_tree->insert_polygon(&myReal_R_21,&reg_real_R_21);
 
    /* std::vector<Point> R_1{Point(483,393),Point(500,394),Point(525,375)};
     std::vector<Point> R_3{Point(613,337),Point(630,357),Point(668,347),Point(662,364)};
@@ -198,18 +198,18 @@ MyR_tree.insert_polygon(&myReal_R_21,&reg_real_R_21);
     MyR_tree.insert_polygon(&myReal_R_5,&reg_real_R_5);
     MyR_tree.insert_polygon(&myReal_R_11,&reg_real_R_11);
     */
-    MyR_tree.show_values_JSON();
+    MyR_tree->show_values_JSON();
 
     std::vector<Polygon * > answ;
-    MyR_tree.range_search(Polygon(Point(476, 408),Point(691, 322)),answ);
+    MyR_tree->range_search(Polygon(Point(476, 408),Point(691, 322)),answ);
 
     std::vector<d_leaf*> ans_knn;
-    MyR_tree.k_NN_DF(Point(10,9),3, ans_knn);
+    MyR_tree->k_NN_DF(Point(10,9),3, ans_knn);
     //Show Values
     //std::cout << MyR_tree.show_values_JSON() << std::endl;
     std::string jsn ="";
-    MyR_tree.get_Range_Search_JSON(answ,jsn);
+    MyR_tree->get_Range_Search_JSON(answ,jsn);
     std::cout << jsn<<std::endl;
-    delete &MyR_tree;
+    delete MyR_tree;
     int xx = 22;
 }
