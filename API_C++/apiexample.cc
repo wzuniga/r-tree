@@ -69,6 +69,7 @@ public:
     void postClear(GloveHttpRequest& request, GloveHttpResponse& response)
     {
         response.contentType("text/json");
+        //delete &MyR_tree;
         MyR_tree = RTree(4);
         std::cout << "POST CLEAR API"<<std::endl;
     }

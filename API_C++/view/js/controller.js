@@ -4,11 +4,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
     $scope.canvas = document.getElementById('canvas');
     $scope.ctx = canvas.getContext('2d');
 
-    var img = new Image();
-    img.src = "/rtree/js/arequipa.jpeg";
-    img.onload = function(){
-        $scope.ctx.drawImage(img, 0, 0);
-    }
+    $scope.onTest = true;
 
     $scope.items = [];
     $scope.polgItems = [];
@@ -46,7 +42,17 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
 
     $http.post("/rtree/load",{})
         .success(function (data) {
-            $scope.render(data);
+            /*if($scope.onTest){
+                console.log("##");
+                var img = new Image();
+                img.src = "/rtree/js/arequipa.jpeg";
+                img.onload = function(){
+                    $scope.ctx.drawImage(img, 0, 0);
+                    $scope.render(data);
+                }
+            }else{*/
+                $scope.render(data);
+            //}
         })
         .error(function (data) {
             alert("Error " + data);
@@ -211,17 +217,36 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
     };
     $scope.reDrawCanvas = function(){
         var len = $scope.memory.length;
-        $scope.drawGrid();
-        for(var i = 0; i < len; i++){
-            if($scope.memory[i].type == "P")
-                $scope.drawPoint($scope.memory[i].point, $scope.memory[i].highlight, $scope.highlightColor);
-            else
-                $scope.drawRegion($scope.memory[i].point, $scope.memory[i].highlight, $scope.highlightColor);
-            //$scope.ctx.stroke();
+        //$scope.drawGrid();
+        if($scope.onTest){
+            console.log("##");
+            var img = new Image();
+            img.src = "/rtree/js/arequipa.jpeg";
+            img.onload = function(){
+                $scope.ctx.drawImage(img, 0, 0);
+                for(var i = 0; i < len; i++){
+                    if($scope.memory[i].type == "P")
+                        $scope.drawPoint($scope.memory[i].point, $scope.memory[i].highlight, $scope.highlightColor);
+                    else
+                        $scope.drawRegion($scope.memory[i].point, $scope.memory[i].highlight, $scope.highlightColor);
+                    //$scope.ctx.stroke();
+                }
+                $scope.regionMemory.forEach( function(object, indice, array) {
+                    $scope.drawRectagle(object[0],object[1],object[2],object[3]);
+                });
+            }
+        }else{
+            for(var i = 0; i < len; i++){
+                if($scope.memory[i].type == "P")
+                    $scope.drawPoint($scope.memory[i].point, $scope.memory[i].highlight, $scope.highlightColor);
+                else
+                    $scope.drawRegion($scope.memory[i].point, $scope.memory[i].highlight, $scope.highlightColor);
+                //$scope.ctx.stroke();
+            }
+            $scope.regionMemory.forEach( function(object, indice, array) {
+                $scope.drawRectagle(object[0],object[1],object[2],object[3]);
+            });
         }
-        $scope.regionMemory.forEach( function(object, indice, array) {
-            $scope.drawRectagle(object[0],object[1],object[2],object[3]);
-        });
     };
 
 
@@ -479,7 +504,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
     };
 
     $scope.clickLoadTest = function(){
-
+        $scope.onTest = true;
         $http.post("/rtree/test",{})
             .success(function (data) {
                 console.log(data);
@@ -500,6 +525,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
                 $scope.queryModel = 'R';
                 $scope.inputType = "0";
                 $scope.liveMode = false;
+                $scope.onTest = false;
             })
             .error(function (data) {
                 alert("Error " + data);
