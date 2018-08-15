@@ -28,5 +28,5 @@ and execute
 ### Open Application
 Look the application on
 
-* [Server Link](http://127.0.0.1:8080/rtree) - click to open
+* [Server Link](http://127.0.0.1:8080/rtree) - click to open 'http://127.0.0.1:8080/rtree'
 
