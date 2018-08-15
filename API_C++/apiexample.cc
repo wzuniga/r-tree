@@ -7,7 +7,7 @@
 #include <string>
 #include <fstream>
 
-RTree * MyR_tree;
+RTree * MyR_tree = new RTree(4);
 
 class RTreeAPI
 {
@@ -69,14 +69,9 @@ public:
     void postClear(GloveHttpRequest& request, GloveHttpResponse& response)
     {
         response.contentType("text/json");
-<<<<<<< HEAD
-        //delete &MyR_tree;
-        MyR_tree = RTree(4);
-        std::cout << "POST CLEAR API"<<std::endl;
-=======
         delete MyR_tree;
+        MyR_tree = new RTree(4);
         std::cout << "POST Clear API"<<std::endl;
->>>>>>> c6afdca75fd97304f21cddbd65ced05ceeb9813f
     }
 
     void postLoad(GloveHttpRequest& request, GloveHttpResponse& response)

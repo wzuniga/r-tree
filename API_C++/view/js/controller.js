@@ -472,10 +472,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
         return Math.sqrt(Math.pow(point2.x-point1.x,2)+Math.pow(point2.y-point1.y,2));
     };
 
-    $scope.render = function(data){
-        $scope.deleteOnMemory();
-        $scope.clearCanvas();
-        //$scope.reDrawCanvas();
+    $scope.dataFor = function(data){
         data.forEach( function(object, indice, array) {
             //console.log("En el índice " + indice + " hay este valor: " + object);
             if(object.is_leaf == "0"){
@@ -501,6 +498,22 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
                 });
             }
         });
+    }
+
+    $scope.render = function(data){
+        $scope.deleteOnMemory();
+        $scope.clearCanvas();
+        if($scope.onTest){
+            console.log("##");
+            var img = new Image();
+            img.src = "/rtree/js/arequipa.jpeg";
+            img.onload = function(){
+                $scope.ctx.drawImage(img, 0, 0);
+                $scope.dataFor(data);
+            }
+        }else{
+            $scope.dataFor(data);
+        }
     };
 
     $scope.clickLoadTest = function(){
