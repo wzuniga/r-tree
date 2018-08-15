@@ -364,36 +364,32 @@ int RTree::count_recursive(RTree_node * node){
         return sum;
     }
 }
-void RTree::DFT_recursive(Point q, int k, RTree_node * node, std::vector<d_leaf *> & L, std::vector<float> & ddk){
+void RTree::DFT_recursive(Point q, int k, RTree_node * node, std::vector<d_leaf *> & L, std::vector<float> & ddk,float & poor){
 	if(node->is_leaf){
         for(int i = 0; i < node->elements; i++){
             ddk.push_back(node->data_leafs[i].region->distance_geometric(q));
             L.push_back(&node->data_leafs[i]);
         }
-        insert_sort<d_leaf >(ddk,L);
         if(ddk.size()>k)
         {
+	        insert_sort<d_leaf>(ddk,L);
             ddk.resize(k);
             L.resize(k);
+        	poor=ddk[k-1];
         }
     }
     else{
 	    std::vector<float> branch_value;
 		std::vector<RTree_node *> branch;
-		float max_current=0;
+        std::cout<<std::endl<<"new branch is: ";
         for(int i = 0; i < node->elements; i++){
 	        branch_value.push_back(node->data_internal_node[i].region->distance_geometric(q));
             branch.push_back(node->data_internal_node[i].child);
         }
-        int asegurated=0;
         insert_sort<RTree_node>(branch_value,branch);
 		for(int i = 0; i < node->elements; i++){
-  	        if(asegurated<k || branch_value[i]<=max_current){
-                DFT_recursive(q,k,branch[i],L,ddk);
-                asegurated += count_recursive(branch[i]);
-            }
-            if(node->data_internal_node[i].region->max_distance_geometric(q)>max_current){
-                max_current=node->data_internal_node[i].region->max_distance_geometric(q);
+  	        if(branch_value[i]<=poor){
+                DFT_recursive(q,k,branch[i],L,ddk,poor);
             }
         }
       }
@@ -416,7 +412,9 @@ void RTree::insert_sort(std::vector<float> & dtmp, std::vector<T*> & chld){
 
 void RTree::k_NN_DF(Point q, int k, std::vector<d_leaf*> &L){
     std::vector<float> dk;
-    DFT_recursive(q, k, this->root,L,dk);
+    float poor = std::numeric_limits<float>::max();
+    std::cout<<std::endl<<poor<<std::endl;
+    DFT_recursive(q, k, this->root,L,dk,poor);
 }
 
 std::string RTree::show_values_JSON()

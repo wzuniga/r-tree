@@ -113,7 +113,7 @@ float Polygon::distance_geometric(Point q){
             d_X_min = abs(q.get_X() - Pmin.get_X());
         }
         if(abs(q.get_X() - Pmax.get_X()) < d_X_min){
-            d_X_min = abs(q.get_X() - Pmin.get_X());
+            d_X_min = abs(q.get_X() - Pmax.get_X());
         }
     }
     float d_Y_min = std::numeric_limits<float>::max();
@@ -125,7 +125,7 @@ float Polygon::distance_geometric(Point q){
             d_Y_min = abs(q.get_Y() - Pmin.get_Y());
         }
         if(abs(q.get_Y() - Pmax.get_Y()) < d_Y_min){
-            d_Y_min = abs(q.get_Y() - Pmin.get_Y());
+            d_Y_min = abs(q.get_Y() - Pmax.get_Y());
         }
     }
     float d = sqrt(d_X_min*d_X_min + d_Y_min*d_Y_min);
