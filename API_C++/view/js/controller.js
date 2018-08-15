@@ -4,7 +4,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
     $scope.canvas = document.getElementById('canvas');
     $scope.ctx = canvas.getContext('2d');
 
-    $scope.onTest = true;
+    $scope.onTest = false;
 
     $scope.items = [];
     $scope.polgItems = [];
@@ -119,13 +119,30 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
         var x_c = event.offsetX;
         var y_c = event.offsetY;
         if($scope.queryModel == 'R' && !$scope.actionMode && $scope.liveMode){
-            $scope.clearCanvas();
-            $scope.reDrawCanvas();
             if($scope.tempPoint != 0){
-                var temp = Object.assign({}, $scope.tempPoint);
-                $scope.drawRange(temp, {"x":x_c, "y":y_c}, $scope.highlightColor);
-                $scope.queryRange(temp, {"x":x_c, "y":y_c});
-            }
+                $scope.clearCanvas();
+                if($scope.onTest){
+                    console.log("##");
+                    var img = new Image();
+                    img.src = "/rtree/js/arequipa.jpeg";
+                    img.onload = function(){
+                        $scope.ctx.drawImage(img, 0, 0);
+                        $scope.reDrawCanvas();
+                        if($scope.tempPoint != 0){
+                            var temp = Object.assign({}, $scope.tempPoint);
+                            $scope.drawRange(temp, {"x":x_c, "y":y_c}, $scope.highlightColor);
+                            $scope.queryRange(temp, {"x":x_c, "y":y_c});
+                        }
+                    }
+                }else{
+                    $scope.reDrawCanvas();
+                    if($scope.tempPoint != 0){
+                        var temp = Object.assign({}, $scope.tempPoint);
+                        $scope.drawRange(temp, {"x":x_c, "y":y_c}, $scope.highlightColor);
+                        $scope.queryRange(temp, {"x":x_c, "y":y_c});
+                    }
+                }
+            }         
         }else{
             if(!$scope.actionMode && $scope.liveMode)
                 $scope.queryKnearest(x_c, y_c, $scope.kvalue);
@@ -218,35 +235,19 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
     $scope.reDrawCanvas = function(){
         var len = $scope.memory.length;
         //$scope.drawGrid();
-        if($scope.onTest){
-            console.log("##");
-            var img = new Image();
-            img.src = "/rtree/js/arequipa.jpeg";
-            img.onload = function(){
-                $scope.ctx.drawImage(img, 0, 0);
-                for(var i = 0; i < len; i++){
-                    if($scope.memory[i].type == "P")
-                        $scope.drawPoint($scope.memory[i].point, $scope.memory[i].highlight, $scope.highlightColor);
-                    else
-                        $scope.drawRegion($scope.memory[i].point, $scope.memory[i].highlight, $scope.highlightColor);
-                    //$scope.ctx.stroke();
-                }
-                $scope.regionMemory.forEach( function(object, indice, array) {
-                    $scope.drawRectagle(object[0],object[1],object[2],object[3]);
-                });
-            }
-        }else{
-            for(var i = 0; i < len; i++){
-                if($scope.memory[i].type == "P")
-                    $scope.drawPoint($scope.memory[i].point, $scope.memory[i].highlight, $scope.highlightColor);
-                else
-                    $scope.drawRegion($scope.memory[i].point, $scope.memory[i].highlight, $scope.highlightColor);
-                //$scope.ctx.stroke();
-            }
-            $scope.regionMemory.forEach( function(object, indice, array) {
-                $scope.drawRectagle(object[0],object[1],object[2],object[3]);
-            });
+
+        for(var i = 0; i < len; i++){
+            if($scope.memory[i].type == "P")
+                $scope.drawPoint($scope.memory[i].point, $scope.memory[i].highlight, $scope.highlightColor);
+            else
+                $scope.drawRegion($scope.memory[i].point, $scope.memory[i].highlight, $scope.highlightColor);
+            //$scope.ctx.stroke();
         }
+        $scope.regionMemory.forEach( function(object, indice, array) {
+            $scope.drawRectagle(object[0],object[1],object[2],object[3]);
+        });
+            
+
     };
 
 
@@ -408,32 +409,31 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
         }
         for(var i=0; i<$scope.selectedRegion.length; i++)
             $scope.selectedRegion[i].highlight = false;
+        if($scope.onTest){
+            console.log("##");
+            var img = new Image();
+            img.src = "/rtree/js/arequipa.jpeg";
+            img.onload = function(){
+                $scope.ctx.drawImage(img, 0, 0);
+            }
+        }
         $http.post("/rtree/nearest",{"x":x_v, "y":y_v, "k":k})
             .success(function (data) {
                 //console.log(data);
                 $scope.clearCanvas();
-                $scope.reDrawCanvas();
-                data.forEach( function(polygon) {
-                    if(polygon.length >1){
-                        var temp = [];
-                        var min = {"x":polygon[0][0],"y":polygon[0][1]};
-                        var minDist = $scope.euclidean({"x":polygon[0][0],"y":polygon[0][1]},{"x":x_v, "y":y_v, "k":k});
-                        for(var i=0; i<polygon.length; i++){
-                            temp.push({"x":polygon[i][0],"y":polygon[i][1]});
-                            var dist = $scope.euclidean({"x":polygon[i][0],"y":polygon[i][1]},{"x":x_v, "y":y_v, "k":k});
-                            if(dist < minDist){
-                                minDist = dist;
-                                min = {"x":polygon[i][0],"y":polygon[i][1]};
-                            }
-                        }
-                        $scope.drawRegion(temp, true, $scope.highlightColor);
-                        $scope.drawLine({"x":x_v, "y":y_v}, min, $scope.highlightNearestColor);
-                    }else{
-                        var c_1 = polygon[0];
-                        $scope.drawPoint({"x":c_1[0],"y":c_1[1]}, true, $scope.highlightColor);
-                        $scope.drawLine({"x":x_v, "y":y_v}, {"x":c_1[0],"y":c_1[1]}, $scope.highlightNearestColor);
+                if($scope.onTest){
+                    console.log("##");
+                    var img = new Image();
+                    img.src = "/rtree/js/arequipa.jpeg";
+                    img.onload = function(){
+                        $scope.ctx.drawImage(img, 0, 0);
+                        $scope.reDrawCanvas();
+                        $scope.dataForNearest(data, x_v, y_v, k);
                     }
-                });
+                }else{
+                    $scope.reDrawCanvas();
+                    $scope.dataForNearest(data, x_v, y_v, k);
+                }
             })
             .error(function (data) {
                 alert("Error " + data);
@@ -442,25 +442,31 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
     };
 
     $scope.queryRange = function(point_1, point_2){
+        if($scope.onTest){
+            console.log("##");
+            var img = new Image();
+            img.src = "/rtree/js/arequipa.jpeg";
+            img.onload = function(){
+                $scope.ctx.drawImage(img, 0, 0);
+            }
+        }
         $http.post("/rtree/range",{"point1":point_1, "point2":point_2})
             .success(function (data) {
                 console.log(data);
                 $scope.clearCanvas();
-                $scope.reDrawCanvas();
-                data.forEach( function(polygon) {
-                    var points = polygon[0].elements;
-                    if(points.length >1){
-                        var temp = [];
-                        for(var i=0; i<points.length; i++)
-                            temp.push({"x":points[i][0],"y":points[i][1]});
-                        $scope.drawRegion(temp, true, $scope.highlightColor);
-                    }else{
-                        var c_1 = points[0];
-                        console.log(c_1);
-                        $scope.drawPoint({"x":c_1[0],"y":c_1[1]}, true, $scope.highlightColor);
+                if($scope.onTest){
+                    console.log("##");
+                    var img = new Image();
+                    img.src = "/rtree/js/arequipa.jpeg";
+                    img.onload = function(){
+                        $scope.ctx.drawImage(img, 0, 0);
+                        $scope.reDrawCanvas();
+                        $scope.dataForRange(data, point_1, point_2);
                     }
-                });
-                $scope.drawRange(point_1, point_2, $scope.highlightColor);
+                }else{
+                    $scope.reDrawCanvas();
+                    $scope.dataForRange(data, point_1, point_2);
+                }
             })
             .error(function (data) {
                 alert("Error " + data);
@@ -499,6 +505,47 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
             }
         });
     }
+    $scope.dataForNearest = function(data, x_v, y_v, k){
+        
+        data.forEach( function(polygon) {
+            if(polygon.length >1){
+                var temp = [];
+                var min = {"x":polygon[0][0],"y":polygon[0][1]};
+                var minDist = $scope.euclidean({"x":polygon[0][0],"y":polygon[0][1]},{"x":x_v, "y":y_v, "k":k});
+                for(var i=0; i<polygon.length; i++){
+                    temp.push({"x":polygon[i][0],"y":polygon[i][1]});
+                    var dist = $scope.euclidean({"x":polygon[i][0],"y":polygon[i][1]},{"x":x_v, "y":y_v, "k":k});
+                    if(dist < minDist){
+                        minDist = dist;
+                        min = {"x":polygon[i][0],"y":polygon[i][1]};
+                    }
+                }
+                $scope.drawRegion(temp, true, $scope.highlightColor);
+                $scope.drawLine({"x":x_v, "y":y_v}, min, $scope.highlightNearestColor);
+            }else{
+                var c_1 = polygon[0];
+                $scope.drawPoint({"x":c_1[0],"y":c_1[1]}, true, $scope.highlightColor);
+                $scope.drawLine({"x":x_v, "y":y_v}, {"x":c_1[0],"y":c_1[1]}, $scope.highlightNearestColor);
+            }
+        });
+    }
+
+    $scope.dataForRange = function(data, point_1, point_2){
+        data.forEach( function(polygon) {
+            var points = polygon[0].elements;
+            if(points.length >1){
+                var temp = [];
+                for(var i=0; i<points.length; i++)
+                    temp.push({"x":points[i][0],"y":points[i][1]});
+                $scope.drawRegion(temp, true, $scope.highlightColor);
+            }else{
+                var c_1 = points[0];
+                console.log(c_1);
+                $scope.drawPoint({"x":c_1[0],"y":c_1[1]}, true, $scope.highlightColor);
+            }
+        });
+        $scope.drawRange(point_1, point_2, $scope.highlightColor);
+    };
 
     $scope.render = function(data){
         $scope.deleteOnMemory();
