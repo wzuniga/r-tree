@@ -29,6 +29,7 @@ class RTree_node{
     public:
     int get_level(){return at_level;}
     RTree_node(bool _l, int _M, int _lvl, RTree_node * f);
+    //~RTree_node();
     friend class RTree;
 };
 struct d_internal_node{
@@ -98,6 +99,7 @@ class RTree{
     void get_polygons_JSON(const std::vector<d_leaf*> &, std::string &);
 
     void get_Range_Search_JSON(const std::vector<Polygon *> &, std::string &);
+    //~RTree();
 };
 
 #endif

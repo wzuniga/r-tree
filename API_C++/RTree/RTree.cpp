@@ -414,7 +414,8 @@ void RTree::k_NN_DF(Point q, int k, std::vector<d_leaf*> &L){
     std::vector<float> dk;
     float poor = std::numeric_limits<float>::max();
     std::cout<<std::endl<<poor<<std::endl;
-    DFT_recursive(q, k, this->root,L,dk,poor);
+    if(this->root != nullptr)
+        DFT_recursive(q, k, this->root,L,dk,poor);
 }
 
 std::string RTree::show_values_JSON()
