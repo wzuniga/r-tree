@@ -137,14 +137,14 @@ float Polygon::max_distance_geometric(Point q){
         d_X_max = abs(q.get_X() - this->get_Pmin().get_X());
     }
     if(abs(q.get_X() - get_Pmax().get_X()) > d_X_max){
-        d_X_max = abs(q.get_X() - this->get_Pmin().get_X());
+        d_X_max = abs(q.get_X() - this->get_Pmax().get_X());
     }
     float d_Y_max = 0.0;
     if(abs(q.get_Y() - this->get_Pmin().get_Y()) > d_Y_max){
         d_Y_max = abs(q.get_Y() - this->get_Pmin().get_Y());
     }
     if(abs(q.get_Y() - this->get_Pmax().get_Y()) > d_Y_max){
-        d_Y_max = abs(q.get_Y() - this->get_Pmin().get_Y());
+        d_Y_max = abs(q.get_Y() - this->get_Pmax().get_Y());
     }
     float d = sqrt(d_X_max*d_X_max+d_Y_max*d_Y_max);
     return d;

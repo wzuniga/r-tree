@@ -188,8 +188,8 @@ RTree_node *  RTree::cuadratic_split_internal_nodes(RTree_node * node){
 }
 bool RTree::insert_internal_region(RTree_node * node, d_internal_node data ){
     Polygon * reg = new Polygon(data.region->get_Pmin(),data.region->get_Pmax());
-    if(reg->set_key(this->indx++))
-        this->indx;
+    if(reg->set_key(this->indx))
+        this->indx++;
     data.region = reg;    
     node->data_internal_node[node->elements] = data;
     node->elements++;
