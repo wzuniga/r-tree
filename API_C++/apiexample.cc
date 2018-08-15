@@ -63,7 +63,7 @@ public:
         std::string res = "";
         MyR_tree->get_Range_Search_JSON(answ, res);
         response << res;
-        std::cout << "POST Range API"<<std::endl;
+        std::cout << "POST RANGE API"<<std::endl;
     }
 
     void postClear(GloveHttpRequest& request, GloveHttpResponse& response)
@@ -73,9 +73,17 @@ public:
         std::cout << "POST Clear API"<<std::endl;
     }
 
+    void postLoad(GloveHttpRequest& request, GloveHttpResponse& response)
+    {
+        response.contentType("text/json");
+        auto res =  MyR_tree->show_values_JSON();
+        response << res;
+        std::cout << "POST LOAD API"<<std::endl;
+    }
+
     void postInsertTest(GloveHttpRequest& request, GloveHttpResponse& response){
 	    response.contentType("text/json");
-    
+    /*
 	    Polygon * P_2 = new Polygon(Point(632,396));
 	    Polygon * P_4 = new Polygon(Point(368,382));
 	    Polygon * P_6 = new Polygon(Point(436,492));
@@ -156,7 +164,7 @@ public:
 	    MyR_tree.insert_polygon(myReal_R_16,reg_real_R_16);
 	    MyR_tree.insert_polygon(myReal_R_21,reg_real_R_21);
         auto res =  MyR_tree.show_values_JSON();
-        response << res;
+        response << res;*/
     }
 
 };
@@ -231,6 +239,13 @@ int main(int argc, char *argv[])
         std::bind(&RTreeAPI::postClear, &rtree, ph::_1, ph::_2)
     );
 
+    serv.addRest("/rtree/load", 1,
+        GloveHttpServer::jsonApiErrorCall,
+        std::bind(&RTreeAPI::get, &rtree, ph::_1, ph::_2),
+        std::bind(&RTreeAPI::postLoad, &rtree, ph::_1, ph::_2)
+    );
+
+    std::cout <<std::endl;
     std::cout << "READY WEB SERVER"<<std::endl;
 
     while(1)
