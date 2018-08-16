@@ -74,8 +74,7 @@ class RTree{
     void range_search_recursive(RTree_node * , Polygon & , std::vector<Polygon *> &);
 
     //Mothods to get KNN
-    //Recursive count of elements to implement a heuristic in KNN-querys.
-    int count_recursive(RTree_node * );
+
     void DFT_recursive(Point , int , RTree_node * , std::vector<d_leaf *> & , std::vector<float> & ,float & );
     //insert sort
     template <class T>

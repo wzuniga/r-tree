@@ -353,17 +353,6 @@ void RTree::range_search(Polygon query, std::vector<Polygon *> & ans){
     range_search_recursive(this->root, q, ans);
 }
 
-//functions to get the KNN elements.
-int RTree::count_recursive(RTree_node * node){
-    if(node->is_leaf)
-        return node->elements;
-    else{
-        int sum = 0;
-        for( int i = 0; i < node->elements;i++)
-            sum += count_recursive(node->data_internal_node[i].child);
-        return sum;
-    }
-}
 void RTree::DFT_recursive(Point q, int k, RTree_node * node, std::vector<d_leaf *> & L, std::vector<float> & ddk,float & poor){
 	if(node->is_leaf){
         for(int i = 0; i < node->elements; i++){
