@@ -71,7 +71,7 @@ public:
         response.contentType("text/json");
         delete MyR_tree;
         MyR_tree = new RTree(4);
-        std::cout << "POST Clear API"<<std::endl;
+        std::cout << "POST CLEAR API"<<std::endl;
     }
 
     void postLoad(GloveHttpRequest& request, GloveHttpResponse& response)

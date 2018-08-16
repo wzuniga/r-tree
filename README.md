@@ -32,6 +32,10 @@ Run comand
 ```
 ./API_C++/apiexample2
 ```
+Or
+```
+make exec
+```
 
 ### Open Application
 Look the application on
