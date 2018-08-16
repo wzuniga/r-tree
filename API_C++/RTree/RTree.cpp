@@ -401,7 +401,7 @@ void RTree::insert_sort(std::vector<float> & dtmp, std::vector<T*> & chld){
 void RTree::k_NN_DF(Point q, int k, std::vector<d_leaf*> &L){
     std::vector<float> dk;
     float poor = std::numeric_limits<float>::max();
-    //std::cout<<std::endl<<poor<<std::endl;
+    
     if(this->root != nullptr)
         DFT_recursive(q, k, this->root,L,dk,poor);
 }
@@ -419,10 +419,8 @@ std::string RTree::show_values_JSON()
 
 void RTree::showAll_values_JSON(RTree_node *node, int level, std::string &json)
 {
-    std::cout<<"json"<<std::endl;
     if(!node->is_leaf)
     {
-        std::cout<<"no leaf"<<std::endl;
         for(int i=0; i<node->elements; i++)
         {
             
@@ -435,16 +433,12 @@ void RTree::showAll_values_JSON(RTree_node *node, int level, std::string &json)
             json +="["+std::to_string(node->data_internal_node[i].region->get_Pmax().get_X())+","+std::to_string(node->data_internal_node[i].region->get_Pmax().get_Y())+"]\n";
             json +="]}";
             json +=",";
-            //std::cout << std::to_string(node->data_internal_node[i].region->get_Pmin().get_X())+","+std::to_string(node->data_internal_node[i].region->get_Pmin().get_Y()) << std::endl;
-            //std::cout << std::to_string(node->data_internal_node[i].region->get_Pmax().get_X())+","+std::to_string(node->data_internal_node[i].region->get_Pmax().get_Y()) << std::endl;
             showAll_values_JSON(node->data_internal_node[i].child, level+1, json);
 
         }
     }
     else
     {
-        std::cout<<"leaf"<<std::endl;
-        //std::cout << "ELEMENTS" << std::endl;
         for(int i=0; i<node->elements; i++)
         {
             json +="{";
@@ -460,8 +454,6 @@ void RTree::showAll_values_JSON(RTree_node *node, int level, std::string &json)
                     json += ",\n";
             }
             json += "]";
-            //json +="["+std::to_string(node->data_leafs[i].region->get_Pmin().get_X())+","+std::to_string(node->data_leafs[i].region->get_Pmin().get_Y())+"],\n";
-            //json +="["+std::to_string(node->data_leafs[i].region->get_Pmax().get_X())+","+std::to_string(node->data_leafs[i].region->get_Pmax().get_Y())+"]\n";
             json +="]}";
             json +=",";
         }
