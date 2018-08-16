@@ -1,5 +1,5 @@
 # R-tree
-r-tree implementation in python and c++ core.
+r-tree implementation in c++ core for Linux.
 
 ## Getting Started
 To run the project you need a Linux OS
