@@ -1,5 +1,5 @@
 # R-tree
-r-tree implementation in python and c++ core.
+r-tree implementation in c++ core for Linux.
 
 ## Getting Started
 To run the project you need a Linux OS
@@ -31,6 +31,10 @@ g++ -o API_C++/apiexample2 API_C++/apiexample.cc API_C++/glovehttpserver.cpp API
 Run comand
 ```
 ./API_C++/apiexample2
+```
+Or
+```
+make exec
 ```
 
 ### Open Application
