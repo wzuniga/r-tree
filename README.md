@@ -38,6 +38,11 @@ make exec
 ```
 
 ### Open Application
-Look the application on
+Look the application on Local Server
 
 * [Server Link](http://127.0.0.1:8080/rtree) - click to open 'http://127.0.0.1:8080/rtree'
+
+
+## The Aplication is also running in Cloud
+
+* [Server Link](http://212.8.251.77:8080/rtree) - click to open 'http://212.8.251.77:8080/rtree'
