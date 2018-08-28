@@ -39,12 +39,15 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
     $scope.tempPoint = 0;
     $scope.liveMode = false;
 
+    $scope.count = 0;
+    $scope.maxOver = 5;
+
     $http.post("/rtree/load",{})
         .success(function (data) {
             $scope.render(data);
         })
         .error(function (data) {
-            alert("Error " + data);
+            console.log("Time Out " + data);
         }
     );
 
@@ -133,7 +136,13 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
             }         
         }else{
             if(!$scope.actionMode && $scope.liveMode)
-                $scope.queryKnearest(x_c, y_c, $scope.kvalue);
+                if ($scope.count > $scope.maxOver){
+                    $scope.queryKnearest(x_c, y_c, $scope.kvalue);
+                    $scope.count = 0;
+                }else{
+                    $scope.count += 1;
+                }
+                
         }
     };
 
@@ -338,7 +347,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
                 $scope.render(data);
             })
             .error(function (data) {
-                alert("Error " + data);
+                console.log("Time Out " + data);
             }
         );
     };
@@ -374,7 +383,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
                 }
             })
             .error(function (data) {
-                alert("Error " + data);
+                console.log("Time Out " + data);
             }
         );
     };
@@ -404,7 +413,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
                 }
             })
             .error(function (data) {
-                alert("Error " + data);
+                console.log("Time Out " + data);
             }
         );
     };
@@ -500,7 +509,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
                 $scope.render(data);
             })
             .error(function (data) {
-                alert("Error " + data);
+                console.log("Time Out " + data);
             }
         );
     };
@@ -517,7 +526,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
                 $scope.onTest = false;
             })
             .error(function (data) {
-                alert("Error " + data);
+                console.log("Time Out " + data);
             }
         );
     };

@@ -31,7 +31,7 @@ public:
         MyR_tree->insert_polygon(p,r);
         auto res =  MyR_tree->show_values_JSON();
         response << res;
-        std::cout << "POST INSERT API x="<<data<<std::endl;
+        //std::cout << "POST INSERT API x="<<data<<std::endl;
     }
 
     void postNearest(GloveHttpRequest& request, GloveHttpResponse& response)
@@ -46,7 +46,7 @@ public:
         std::string res="";
         MyR_tree->get_polygons_JSON( ans_knn,res);
         response << res;
-        std::cout << "POST NEAREST API x="<<x<<" y="<<y<<" k="<<k<<std::endl;
+        //std::cout << "POST NEAREST API x="<<x<<" y="<<y<<" k="<<k<<std::endl;
     }
 
     void postRange(GloveHttpRequest& request, GloveHttpResponse& response)
@@ -63,7 +63,7 @@ public:
         std::string res = "";
         MyR_tree->get_Range_Search_JSON(answ, res);
         response << res;
-        std::cout << "POST RANGE API"<<std::endl;
+        //std::cout << "POST RANGE API"<<std::endl;
     }
 
     void postClear(GloveHttpRequest& request, GloveHttpResponse& response)
@@ -71,7 +71,7 @@ public:
         response.contentType("text/json");
         delete MyR_tree;
         MyR_tree = new RTree(4);
-        std::cout << "POST CLEAR API"<<std::endl;
+        //std::cout << "POST CLEAR API"<<std::endl;
     }
 
     void postLoad(GloveHttpRequest& request, GloveHttpResponse& response)
@@ -79,7 +79,7 @@ public:
         response.contentType("text/json");
         auto res =  MyR_tree->show_values_JSON();
         response << res;
-        std::cout << "POST LOAD API"<<std::endl;
+        //std::cout << "POST LOAD API"<<std::endl;
     }
 
     void postInsertTest(GloveHttpRequest& request, GloveHttpResponse& response){
@@ -181,7 +181,7 @@ public:
         std::string file = "API_C++/view/ViewTree.html";
         if(!request.special["file"].empty())
            file = "API_C++/view/js/"+request.special["file"];
-        std::cout << "SEND "<< file <<std::endl;
+        //std::cout << "SEND "<< file <<std::endl;
         std::ifstream myfile (file);
         if (myfile.is_open()){
             while ( getline (myfile,line) )
