@@ -40,6 +40,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
     $scope.liveMode = false;
 
     $scope.count = 0;
+    $scope.countR = 0;
     $scope.maxOver = 5;
 
     $http.post("/rtree/load",{})
@@ -128,9 +129,13 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
                 }else{
                     $scope.reDrawCanvas();
                     if($scope.tempPoint != 0){
-                        var temp = Object.assign({}, $scope.tempPoint);
-                        $scope.drawRange(temp, {"x":x_c, "y":y_c}, $scope.highlightColor);
-                        $scope.queryRange(temp, {"x":x_c, "y":y_c});
+                        if ($scope.countR > $scope.maxOver){
+                            var temp = Object.assign({}, $scope.tempPoint);
+                            $scope.drawRange(temp, {"x":x_c, "y":y_c}, $scope.highlightColor);
+                            $scope.queryRange(temp, {"x":x_c, "y":y_c});
+                        }else{
+                            $scope.countR += 1;
+                        }
                     }
                 }
             }         
