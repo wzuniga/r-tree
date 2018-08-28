@@ -161,6 +161,13 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
         return false;
     };
 
+    $scope.warningLive = function(){
+        if($scope.liveMode){
+            alert("This live search mode, depending server's latency may be a little bit slowly.");
+        }
+    }
+
+
     /**
      * highlight Region or Point 
      */
