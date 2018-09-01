@@ -356,7 +356,7 @@ void RTree::range_search(Polygon query, std::vector<Polygon *> & ans){
 void RTree::DFT_recursive(Point q, int k, RTree_node * node, std::vector<d_leaf *> & L, std::vector<float> & ddk,float & poor){
 	if(node->is_leaf){
         for(int i = 0; i < node->elements; i++){
-            ddk.push_back(node->data_leafs[i].region->distance_geometric(q));
+            ddk.push_back(node->data_leafs[i].region->distance_to_polygon(q));
             L.push_back(&node->data_leafs[i]);
         }
         if(ddk.size()>k)

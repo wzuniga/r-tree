@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <limits>
+#include <math.h>
 class Point{
     private:
     //2D - Coordinates of Point.  
@@ -38,6 +39,9 @@ class Point{
         this->X = x;
         this->Y = y;
     }
+    float distance_points(Point  q){
+      return sqrt((this->get_X()-q.get_X())^2 + (this->get_Y() - q.get_Y())^2);
+    }
 };
 
 class Polygon{
@@ -72,6 +76,7 @@ class Polygon{
     //To get KNN query- Geometric distance.
     //template <class >
     float distance_geometric(Point );
+    float distance_to_polygon(Point );
     //
     //template <class T>
     float max_distance_geometric(Point );

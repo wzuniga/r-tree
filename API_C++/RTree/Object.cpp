@@ -1,5 +1,4 @@
 #include "Objects.hpp"
-#include <math.h>
 #include <stdlib.h>
 #include <iostream>
 Polygon::Polygon(std::vector<Point> p):vertices(p), key(-1),corners(p.size()){
@@ -130,6 +129,18 @@ float Polygon::distance_geometric(Point q){
     }
     float d = sqrt(d_X_min*d_X_min + d_Y_min*d_Y_min);
     return d;
+}
+float Polygon::distance_to_polygon(Point q){
+    int minIndex;
+    float minDistance = std::numeric_limits<float>::max();
+    for(int i = 0; i < corners; i++){
+        float distance = this->vertices[i].distance_points(q);
+        if(distance < minDistance){
+            minIndex = i;
+            minDistance = distance;
+        }
+    }
+    return minDistance;
 }
 
 float Polygon::max_distance_geometric(Point q){
