@@ -53,6 +53,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
     );
 
     $scope.changeState = function(){
+        $scope.polgItems = [];
         $scope.actionMode = !$scope.actionMode;
         var tempClass = $scope.classInput;
         $scope.classInput = $scope.classSearch;
