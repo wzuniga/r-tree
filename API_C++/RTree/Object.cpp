@@ -134,8 +134,8 @@ float Polygon::distance_to_polygon(Point q){
     int minIndex;
     float minDistance = std::numeric_limits<float>::max();
     for(int i = 0; i < corners; i++){
-        float distance = this->vertices[i].distance_points(q);
-        if(distance < minDistance){
+		float distance = this->vertices[i].distance_points(q);
+		if(distance < minDistance){
             minIndex = i;
             minDistance = distance;
         }

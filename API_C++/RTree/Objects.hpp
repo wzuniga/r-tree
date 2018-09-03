@@ -4,6 +4,7 @@
 #include <vector>
 #include <limits>
 #include <math.h>
+#include <iostream>
 class Point{
     private:
     //2D - Coordinates of Point.  
@@ -40,7 +41,8 @@ class Point{
         this->Y = y;
     }
     float distance_points(Point  q){
-      return sqrt((this->get_X()-q.get_X())^2 + (this->get_Y() - q.get_Y())^2);
+		float sum=pow(this->get_X()-q.get_X(),2) + pow(this->get_Y() - q.get_Y(),2);
+		return sqrt(sum);
     }
 };
 
@@ -52,11 +54,12 @@ class Polygon{
     Point Pmax;
     int key;
     
-    //Colection of Points that represent all vertices
+    public:
+	//Colection of Points that represent all vertices
     std::vector<Point> vertices;
     void area_added(Polygon &, Point & , Point & );
     
-    public:
+    
     int corners;
     //Initialize the Vertices of Polygon
     Polygon(std::vector<Point> ) ;
