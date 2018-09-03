@@ -517,6 +517,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
     };
 
     $scope.clickLoadTest = function(){
+        $scope.polgItems = [];
         $scope.onTest = true;
         $http.post("/rtree/test",{})
             .success(function (data) {
