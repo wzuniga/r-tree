@@ -536,6 +536,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
                 $scope.inputType = "0";
                 $scope.liveMode = false;
                 $scope.onTest = false;
+                $scope.polgItems = [];
             })
             .error(function (data) {
                 console.log("Time Out " + data);
