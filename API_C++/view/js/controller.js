@@ -77,6 +77,7 @@ fessmodule.controller('ctrlRead', function ($scope, $filter, $http) {
                 $scope.putOnMemory(point, "P");
                 $scope.drawPoint(point, false, "");
                 $scope.insertToTree([point]);
+                $scope.polgItems = [];
             }else if($scope.inputType == "1"){
                 if($scope.findOnItems($scope.polgItems, x_c, y_c)){
                     $scope.putOnMemory($scope.polgItems, "R");
