@@ -131,14 +131,36 @@ float Polygon::distance_geometric(Point q){
     return d;
 }
 float Polygon::distance_to_polygon(Point q){
-    int minIndex;
+    //int minIndex;
     float minDistance = std::numeric_limits<float>::max();
+    float distanceLine = std::numeric_limits<float>::max();
     for(int i = 0; i < corners; i++){
-		float distance = this->vertices[i].distance_points(q);
-		if(distance < minDistance){
-            minIndex = i;
-            minDistance = distance;
+		float distancePoint = this->vertices[i].distance_points(q);
+
+        if(i!=0)
+        {
+            float A = this->vertices[i].get_Y()-this->vertices[i-1].get_Y();
+            float B = -(this->vertices[i].get_X()-this->vertices[i-1].get_X());
+            float C = this->vertices[i-1].get_Y()*((this->vertices[i].get_X()-this->vertices[i-1].get_X()))-this->vertices[i-1].get_X()*(this->vertices[i].get_Y()-this->vertices[i-1].get_Y());
+            distanceLine = abs(A*q.get_X()+B*q.get_Y()+C)/sqrt(pow(A,2)+pow(B,2));
+            
         }
+
+        if(distanceLine < distancePoint)
+        {
+    		if(distanceLine < minDistance){
+                //minIndex = i;
+                minDistance = distanceLine;
+            }
+        }
+        else
+        {
+            if(distancePoint < minDistance){
+                //minIndex = i;
+                minDistance = distancePoint;
+            }
+        }
+
     }
     return minDistance;
 }

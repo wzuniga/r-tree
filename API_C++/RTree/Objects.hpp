@@ -44,6 +44,7 @@ class Point{
 		float sum=pow(this->get_X()-q.get_X(),2) + pow(this->get_Y() - q.get_Y(),2);
 		return sqrt(sum);
     }
+
 };
 
 class Polygon{
