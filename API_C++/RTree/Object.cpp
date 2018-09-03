@@ -1,6 +1,9 @@
 #include "Objects.hpp"
 #include <stdlib.h>
 #include <iostream>
+
+static float PI = 3.141522;
+
 Polygon::Polygon(std::vector<Point> p):vertices(p), key(-1),corners(p.size()){
     Polygon mbb = this->get_mbb();
     this->Pmin = mbb.Pmin;
@@ -134,17 +137,43 @@ float Polygon::distance_to_polygon(Point q){
     //int minIndex;
     float minDistance = std::numeric_limits<float>::max();
     float distanceLine = std::numeric_limits<float>::max();
+    float previousDistance = std::numeric_limits<float>::max();
     for(int i = 0; i < corners; i++){
 		float distancePoint = this->vertices[i].distance_points(q);
 
         if(i!=0)
         {
-            float A = this->vertices[i].get_Y()-this->vertices[i-1].get_Y();
-            float B = -(this->vertices[i].get_X()-this->vertices[i-1].get_X());
-            float C = this->vertices[i-1].get_Y()*((this->vertices[i].get_X()-this->vertices[i-1].get_X()))-this->vertices[i-1].get_X()*(this->vertices[i].get_Y()-this->vertices[i-1].get_Y());
-            distanceLine = abs(A*q.get_X()+B*q.get_Y()+C)/sqrt(pow(A,2)+pow(B,2));
-            
+            float distanceBetweenPoints = this->vertices[i].distance_points(this->vertices[i-1]);
+            float angle1 = (pow(distancePoint,2)-pow(distanceBetweenPoints,2)-pow(previousDistance,2))/(-2*distanceBetweenPoints*previousDistance);
+            float angle2 = (pow(previousDistance,2)-pow(distanceBetweenPoints,2)-pow(distancePoint,2))/(-2*distanceBetweenPoints*distancePoint);
+
+            if(angle1 > 0 && angle2 >0)
+            {
+                float A = this->vertices[i].get_Y()-this->vertices[i-1].get_Y();
+                float B = -(this->vertices[i].get_X()-this->vertices[i-1].get_X());
+                float C = this->vertices[i-1].get_Y()*((this->vertices[i].get_X()-this->vertices[i-1].get_X()))-this->vertices[i-1].get_X()*(this->vertices[i].get_Y()-this->vertices[i-1].get_Y());
+                distanceLine = abs(A*q.get_X()+B*q.get_Y()+C)/sqrt(pow(A,2)+pow(B,2));
+
+            }            
         }
+        else
+        {
+            previousDistance = this->vertices[corners-1].distance_points(q);
+            float distanceBetweenPoints = this->vertices[i].distance_points(this->vertices[corners-1]);
+            float angle1 = (pow(distancePoint,2)-pow(distanceBetweenPoints,2)-pow(previousDistance,2))/(-2*distanceBetweenPoints*previousDistance);
+            float angle2 = (pow(previousDistance,2)-pow(distanceBetweenPoints,2)-pow(distancePoint,2))/(-2*distanceBetweenPoints*distancePoint);
+
+            if(angle1 > 0 && angle2 >0)
+            {
+                float A = this->vertices[i].get_Y()-this->vertices[corners-1].get_Y();
+                float B = -(this->vertices[i].get_X()-this->vertices[corners-1].get_X());
+                float C = this->vertices[corners-1].get_Y()*((this->vertices[i].get_X()-this->vertices[corners-1].get_X()))-this->vertices[corners-1].get_X()*(this->vertices[i].get_Y()-this->vertices[corners-1].get_Y());
+                distanceLine = abs(A*q.get_X()+B*q.get_Y()+C)/sqrt(pow(A,2)+pow(B,2));
+
+            }    
+        }
+
+        previousDistance = distancePoint;
 
         if(distanceLine < distancePoint)
         {
