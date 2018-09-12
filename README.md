@@ -1,8 +1,8 @@
 # R-tree
-r-tree implementation in c++ core for Linux.
+r-tree implementation in c++ core for Linux and MacOS.
 
 ## Getting Started
-To run the project you need a Linux OS
+To run the project you need a Linux OS or MacOS.
 
 ### Prerequisites
 
@@ -12,37 +12,54 @@ Install make to run MakeFile if you need
 Clone repository
 * [Rtree repository](https://github.com/wzuniga/r-tree.git) link 'https://github.com/wzuniga/r-tree.git'
 
-Enter to folder r-tree
-```
- cd r-tree
+
+#### Requirements
+```sh
+Install brew
+copy and paste the next command in terminal 
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
 
-### COMPILE C++ API
-If you use MakeFile just run the next step on folder r-tree
+#### Dependencies
+```sh
+Install libboost-all-dev
+command for install libboost-all-dev
+brew install boost
 ```
+```sh
+Install g++
+command for install g++ 
+brew install g++ 
+```
+```sh
+Install cmake
+command for install cmake
+brew install cmake 
+```
+
+```sh
+Install make
+command for install make
+brew install make 
+```
+
+### COMPILE C++ API and EXCUTE C++ API
+```sh
+cd r-tree
+mkdir build
+cd build
+cmake ..
 make
-```
-Or
-```
-g++ -o API_C++/apiexample2 API_C++/apiexample.cc API_C++/glovehttpserver.cpp API_C++/glove.cpp API_C++/glovewebsockets.cpp API_C++/glovecoding.cpp API_C++/glovehttpcommon.cpp API_C++/RTree/RTree.cpp API_C++/RTree/Object.cpp -lpthread -DENABLE_OPENSSL=0 -DENABLE_COMPRESSION=0 -std=c++11 -O3
+`./run_server`
 ```
 
-### EXCUTE C++ API
-Run comand
-```
-./API_C++/apiexample2
-```
-Or
-```
-make exec
-```
 
 ### Open Application
 Look the application on Local Server
 
-* [Server Link](http://127.0.0.1:8080/rtree) - click to open 'http://127.0.0.1:8080/rtree'
+* [Server Link](http://127.0.0.1:8090/rtree/ViewTree.html) - click to open 'http://127.0.0.1:8090/rtree/ViewTree.html'
 
 
 ## The Aplication is also running in Cloud
 
-* [Server Link](http://212.8.251.77:8080/rtree) - click to open 'http://212.8.251.77:8080/rtree'
+* [Server Link](http://212.8.251.77:8090/rtree/ViewTree.html) - click to open 'http://212.8.251.77:8090/rtree/ViewTree.html'
